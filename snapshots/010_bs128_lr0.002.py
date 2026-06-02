@@ -366,11 +366,11 @@ class Hyperparameters:
     train_token_limit : int = 180_000_000 # cap on the number of distinct train tokens to use (loader cycles within them); None for all
     val_token_limit : int = 50_000_000 # cap on the number of distinct val tokens to use; None for all
     # optimization hyperparams
-    batch_size : int = 1*64 # batch size, in sequences, across all devices
-    device_batch_size : int = 16 # batch size, in sequences, per device
+    batch_size : int = 2*64 # batch size, in sequences, across all devices
+    device_batch_size : int = 64 # batch size, in sequences, per device
     sequence_length : int = 1024 # sequence length, in tokens
     num_iterations : int = 5100 # safety upper bound on steps; the real stop is the time budget below
-    learning_rate : float = 0.006 # LR search at bs64
+    learning_rate : float = 0.002 # 0.004 * sqrt(batch_size/512) = 0.004 * sqrt(128/512)
     weight_decay : float = 0
     # time budget: single-GPU-equivalent training minutes. The actual wall-clock stop is
     # total_train_minutes / num_gpus, because the global batch is fixed regardless of GPU

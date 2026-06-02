@@ -34,4 +34,4 @@ Currently waiting for CC to finish somei infrastructure, but then will do a base
 
 10:54 am: Checked in with Aayush. I am now getting some benefits to the learning rate tuning and found 0.003 seemed to work better than what I had.
 
-11:02 am: Looks like the smalelr batch size is definitely helping. We can continue to do binary search on batch size for a while.
+11:02 am: Looks like the smalelr batch size is definitely helping. We can continue to do binary search on batch size for a while. Batch size 128 does even better than 256 or 512, bu tonly marginally better than 256. Trying 64 now, robably won't work well here. Tuned lr by sqrt of batch size. Will do additional tunin gafter.

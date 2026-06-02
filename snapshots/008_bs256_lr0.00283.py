@@ -366,11 +366,11 @@ class Hyperparameters:
     train_token_limit : int = 180_000_000 # cap on the number of distinct train tokens to use (loader cycles within them); None for all
     val_token_limit : int = 50_000_000 # cap on the number of distinct val tokens to use; None for all
     # optimization hyperparams
-    batch_size : int = 1*64 # batch size, in sequences, across all devices
-    device_batch_size : int = 16 # batch size, in sequences, per device
+    batch_size : int = 4*64 # batch size, in sequences, across all devices
+    device_batch_size : int = 64 # batch size, in sequences, per device
     sequence_length : int = 1024 # sequence length, in tokens
     num_iterations : int = 5100 # safety upper bound on steps; the real stop is the time budget below
-    learning_rate : float = 0.006 # LR search at bs64
+    learning_rate : float = 0.00283
     weight_decay : float = 0
     # time budget: single-GPU-equivalent training minutes. The actual wall-clock stop is
     # total_train_minutes / num_gpus, because the global batch is fixed regardless of GPU
@@ -521,15 +521,12 @@ for step in range(args.num_iterations + 1):
         model.eval()
         val_loader.reset()
         val_loss = 0.0
-        # no_grad() so eval doesn't build the autograd graph or retain activations
-        # (saves memory/time; the old torch.compile incompatibility is gone as of PyTorch 2.5)
-        with torch.no_grad():
-            for _ in range(val_steps):
-                x_val, y_val = val_loader.next_batch()
-                with ctx:
-                    _, loss = model(x_val, y_val, return_logits=False)
-                    val_loss += loss.detach()
-                    del loss
+        for _ in range(val_steps):
+            x_val, y_val = val_loader.next_batch()
+            with ctx: # of course, we'd like to use no_grad() here too, but that creates a torch.compile error for some reason
+                _, loss = model(x_val, y_val, return_logits=False)
+                val_loss += loss.detach()
+                del loss
         dist.all_reduce(val_loss, op=dist.ReduceOp.AVG)
         val_loss /= val_steps
         # log val loss to console and to logfile

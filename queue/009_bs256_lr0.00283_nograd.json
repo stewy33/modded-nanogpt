@@ -1,0 +1,18 @@
+{
+  "id": "009_bs256_lr0.00283_nograd",
+  "seq": 9,
+  "name": "bs256_lr0.00283_nograd",
+  "source": "/workspace/modded-nanogpt/train_gpt2.py",
+  "snapshot": "snapshots/009_bs256_lr0.00283_nograd.py",
+  "console": "queue/009_bs256_lr0.00283_nograd.console.log",
+  "nproc": 4,
+  "status": "cancelled",
+  "submitted_at": "2026-06-02T15:11:55",
+  "started_at": null,
+  "finished_at": "2026-06-02T15:15:58",
+  "pid": null,
+  "run_uuid": null,
+  "logfile": null,
+  "exit_code": null,
+  "cancel_requested": true
+}

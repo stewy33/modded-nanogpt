@@ -1,0 +1,18 @@
+{
+  "id": "003_lr-0.002",
+  "seq": 3,
+  "name": "lr-0.002",
+  "source": "/workspace/modded-nanogpt/train_gpt2.py",
+  "snapshot": "snapshots/003_lr-0.002.py",
+  "console": "queue/003_lr-0.002.console.log",
+  "nproc": 4,
+  "status": "done",
+  "submitted_at": "2026-06-02T14:33:10",
+  "started_at": "2026-06-02T14:33:12",
+  "finished_at": "2026-06-02T14:47:43",
+  "pid": null,
+  "run_uuid": "6f720434-1502-45ad-a81a-56ab4b9ec5a0",
+  "logfile": "logs/6f720434-1502-45ad-a81a-56ab4b9ec5a0.txt",
+  "exit_code": 0,
+  "cancel_requested": false
+}

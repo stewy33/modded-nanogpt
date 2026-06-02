@@ -1,0 +1,9 @@
+W0602 13:51:24.199000 7509 torch/distributed/run.py:774] 
+W0602 13:51:24.199000 7509 torch/distributed/run.py:774] *****************************************
+W0602 13:51:24.199000 7509 torch/distributed/run.py:774] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0602 13:51:24.199000 7509 torch/distributed/run.py:774] *****************************************
+[Gloo] Rank 2[Gloo] Rank 1[Gloo] Rank [Gloo] Rank 3 is connected to 3 is connected to 30 is connected to  is connected to 3 peer ranks. Expected number of connected peer ranks is :  peer ranks. Expected number of connected peer ranks is : 3 peer ranks.  peer ranks. Expected number of connected peer ranks is : 3
+3
+Expected number of connected peer ranks is : 33
+
+wrote logfile for 506e77b9-34f7-4170-869f-4158f7827067

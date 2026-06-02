@@ -27,7 +27,21 @@ RUNS = {
     "lr-0.003": "logs/ed2e2255-76b7-4ca4-97c2-13bec1c80c90.txt",
     "lr-0.004": "logs/996eb093-1854-4ff4-8186-9aba7a9d3fd3.txt",
     "lr-0.008": "logs/f7f517f4-0829-4413-a83e-8846ad991e6d.txt",
+    # batch-size search (LR scaled as 0.004*sqrt(bs/512))
     "bs256_lr0.00283": "logs/008_bs256_lr0.00283_035e0a8c-5c8e-436a-8b1d-d2b8cac72d76.txt",
+    "bs192_lr0.00245": "logs/014_bs192_lr0.0024495_0a84f15f-1a48-4220-8359-fad7b67b78db.txt",
+    "bs128_lr0.002": "logs/011_bs128_lr0.002_82448c1c-1414-49a4-bbc7-adeb166fe44f.txt",
+    "bs64_lr0.00141": "logs/012_bs64_lr0.0014142_b96290ae-4460-4de6-a579-70967576f852.txt",
+    # LR search at bs128
+    "bs128_lr0.00141": "logs/016_bs128_lr0.00141_6b3129b8-b3bd-4962-a97f-40b7d115072d.txt",
+    "bs128_lr0.00283": "logs/015_bs128_lr0.00283_54c0f31c-6b13-4b96-a4e8-3ef8a011b569.txt",
+    "bs128_lr0.004": "logs/017_bs128_lr0.004_740a973d-00af-40cc-bcae-06ab7f2a5e46.txt",
+    "bs128_lr0.0048": "logs/021_bs128_lr0.0048_79bae3ae-7cdc-404e-93b6-4b8854e61bff.txt",
+    "bs128_lr0.00566": "logs/018_bs128_lr0.00566_3f80324f-7092-4744-8d6d-7aa718a840dd.txt",
+    "bs128_lr0.0058": "logs/023_bs128_lr0.0058_be4a334b-7df8-4cf3-891d-20d5751cb6a8.txt",
+    "bs128_lr0.0062": "logs/022_bs128_lr0.0062_b67e436a-09c1-43a5-9a76-391fbcdbbb90.txt",
+    "bs128_lr0.0067": "logs/020_bs128_lr0.0067_f1217391-9dac-4e53-af73-50ce8d38b2ef.txt",
+    "bs128_lr0.008": "logs/019_bs128_lr0.008_4f90fb14-f6b8-4afa-9855-0334dc0657b1.txt",
 }
 
 # refresh the plots every REFRESH_SECONDS while training is ongoing

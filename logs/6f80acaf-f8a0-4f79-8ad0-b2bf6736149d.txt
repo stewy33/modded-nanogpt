@@ -1,3 +1,4 @@
+====================================================================================================
 import os
 import sys
 with open(sys.argv[0]) as f:
@@ -363,14 +364,14 @@ class Hyperparameters:
     # data hyperparams
     input_bin : str = 'data/fineweb10B/fineweb_train_*.bin' # input .bin to train on
     input_val_bin : str = 'data/fineweb10B/fineweb_val_*.bin' # input .bin to eval validation loss on
-    train_token_limit : int = 180_000_000 # cap on the number of distinct train tokens to use (loader cycles within them); None for all
+    train_token_limit : int = 250_000_000 # cap on the number of distinct train tokens to use (loader cycles within them); None for all
     val_token_limit : int = 50_000_000 # cap on the number of distinct val tokens to use; None for all
     # optimization hyperparams
-    batch_size : int = 1*64 # batch size, in sequences, across all devices
-    device_batch_size : int = 16 # batch size, in sequences, per device
+    batch_size : int = 8*64 # batch size, in sequences, across all devices
+    device_batch_size : int = 64 # batch size, in sequences, per device
     sequence_length : int = 1024 # sequence length, in tokens
     num_iterations : int = 5100 # safety upper bound on steps; the real stop is the time budget below
-    learning_rate : float = 0.006 # LR search at bs64
+    learning_rate : float = 0.002
     weight_decay : float = 0
     # time budget: single-GPU-equivalent training minutes. The actual wall-clock stop is
     # total_train_minutes / num_gpus, because the global batch is fixed regardless of GPU
@@ -416,10 +417,6 @@ x, y = train_loader.next_batch()
 # there are only 50257 unique GPT-2 tokens; we extend to nearest multiple of 128 for efficiency. suggested to me by @Grad62304977.
 # this originates from Karpathy's experiments.
 num_vocab = 50304
-# fix the seed so every run starts from identical initial weights (same on all ranks).
-# this is for reproducible comparisons, not bit-exact determinism; GPU/bf16 float ops
-# still introduce small run-to-run noise during training.
-torch.manual_seed(1337)
 model = GPT(GPTConfig(vocab_size=num_vocab, n_layer=12, n_head=6, n_embd=768))
 model = model.cuda()
 if hasattr(config, "coordinate_descent_tuning"):
@@ -452,10 +449,7 @@ for opt in optimizers:
 
 # begin logging
 if master_process:
-    # prefix the log name with this run's name (the snapshot filename stem, e.g.
-    # "005_bs256_lr0.00283") so logs are identifiable at a glance, before the uuid.
-    run_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
-    run_id = '%s_%s' % (run_name, uuid.uuid4())
+    run_id = str(uuid.uuid4())
     logdir = 'logs/%s/' % run_id
     os.makedirs(logdir, exist_ok=True)
     logfile = 'logs/%s.txt' % run_id
@@ -497,15 +491,6 @@ for step in range(args.num_iterations + 1):
     # elapsed timed training so far. The first 10 steps are warmup/compile and are excluded
     # from timing (see the step==10 reset above), so they don't count against the budget or LR.
     elapsed_ms = 0.0 if step <= 10 else training_time_ms + 1000 * (time.time() - t0)
-    # last_step / do_eval below are derived from elapsed_ms, but that timer is PER-RANK and
-    # ranks drift by a few ms. Near a boundary one rank could decide do_eval/last_step while
-    # another doesn't -> they then call mismatched NCCL collectives (val all_reduce vs Muon
-    # all_reduce) and deadlock (all GPUs spin at 100%). Broadcast rank 0's clock so every rank
-    # makes the identical decision. The guard is on `step`, which is in lockstep across ranks.
-    if step > 10:
-        _elapsed = torch.tensor(elapsed_ms, device='cuda')
-        dist.broadcast(_elapsed, src=0)
-        elapsed_ms = _elapsed.item()
     # stop once the time budget is spent; num_iterations is only a safety cap
     last_step = (elapsed_ms >= train_time_budget_ms) or (step == args.num_iterations)
     # evaluate at evenly spaced points through the budget, and always at the stop
@@ -521,15 +506,12 @@ for step in range(args.num_iterations + 1):
         model.eval()
         val_loader.reset()
         val_loss = 0.0
-        # no_grad() so eval doesn't build the autograd graph or retain activations
-        # (saves memory/time; the old torch.compile incompatibility is gone as of PyTorch 2.5)
-        with torch.no_grad():
-            for _ in range(val_steps):
-                x_val, y_val = val_loader.next_batch()
-                with ctx:
-                    _, loss = model(x_val, y_val, return_logits=False)
-                    val_loss += loss.detach()
-                    del loss
+        for _ in range(val_steps):
+            x_val, y_val = val_loader.next_batch()
+            with ctx: # of course, we'd like to use no_grad() here too, but that creates a torch.compile error for some reason
+                _, loss = model(x_val, y_val, return_logits=False)
+                val_loss += loss.detach()
+                del loss
         dist.all_reduce(val_loss, op=dist.ReduceOp.AVG)
         val_loss /= val_steps
         # log val loss to console and to logfile
@@ -603,3 +585,46 @@ if master_process:
 # -------------------------------------------------------------------------
 # clean up nice
 dist.destroy_process_group()
+====================================================================================================
+Running pytorch 2.8.0+cu128 compiled for CUDA 12.8
+nvidia-smi:
+Tue Jun  2 14:55:02 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 580.126.09             Driver Version: 580.126.09     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 80GB HBM3          On  |   00000000:18:00.0 Off |                    0 |
+| N/A   35C    P0            123W /  700W |    2975MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA H100 80GB HBM3          On  |   00000000:3A:00.0 Off |                    0 |
+| N/A   36C    P0            123W /  700W |    2975MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   2  NVIDIA H100 80GB HBM3          On  |   00000000:9A:00.0 Off |                    0 |
+| N/A   34C    P0            123W /  700W |    2975MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   3  NVIDIA H100 80GB HBM3          On  |   00000000:AB:00.0 Off |                    0 |
+| N/A   41C    P0            127W /  700W |    2975MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A           56621      C   /usr/local/bin/python                  2966MiB |
+|    1   N/A  N/A           56622      C   /usr/local/bin/python                  2966MiB |
+|    2   N/A  N/A           56623      C   /usr/local/bin/python                  2966MiB |
+|    3   N/A  N/A           56624      C   /usr/local/bin/python                  2966MiB |
++-----------------------------------------------------------------------------------------+
+
+====================================================================================================
+step:1/5100 train_loss:15.9968 train_time:88479ms step_avg:nanms
+step:2/5100 train_loss:9.4768 train_time:88757ms step_avg:nanms
+step:3/5100 train_loss:8.7628 train_time:89046ms step_avg:nanms

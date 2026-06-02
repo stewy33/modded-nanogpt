@@ -1,0 +1,18 @@
+{
+  "id": "026_bs64_lr0.004",
+  "seq": 26,
+  "name": "bs64_lr0.004",
+  "source": "/workspace/modded-nanogpt/train_gpt2.py",
+  "snapshot": "snapshots/026_bs64_lr0.004.py",
+  "console": "queue/026_bs64_lr0.004.console.log",
+  "nproc": 4,
+  "status": "queued",
+  "submitted_at": "2026-06-02T17:00:24",
+  "started_at": null,
+  "finished_at": null,
+  "pid": null,
+  "run_uuid": null,
+  "logfile": null,
+  "exit_code": null,
+  "cancel_requested": false
+}

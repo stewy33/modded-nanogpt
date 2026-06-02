@@ -1,0 +1,18 @@
+{
+  "id": "018_bs128_lr0.00566",
+  "seq": 18,
+  "name": "bs128_lr0.00566",
+  "source": "/workspace/modded-nanogpt/train_gpt2.py",
+  "snapshot": "snapshots/018_bs128_lr0.00566.py",
+  "console": "queue/018_bs128_lr0.00566.console.log",
+  "nproc": 4,
+  "status": "done",
+  "submitted_at": "2026-06-02T15:41:56",
+  "started_at": "2026-06-02T15:41:57",
+  "finished_at": "2026-06-02T15:45:05",
+  "pid": null,
+  "run_uuid": "018_bs128_lr0.00566_3f80324f-7092-4744-8d6d-7aa718a840dd",
+  "logfile": "logs/018_bs128_lr0.00566_3f80324f-7092-4744-8d6d-7aa718a840dd.txt",
+  "exit_code": 0,
+  "cancel_requested": false
+}

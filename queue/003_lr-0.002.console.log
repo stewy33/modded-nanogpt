@@ -1,0 +1,427 @@
+W0602 14:33:14.642000 45667 torch/distributed/run.py:774] 
+W0602 14:33:14.642000 45667 torch/distributed/run.py:774] *****************************************
+W0602 14:33:14.642000 45667 torch/distributed/run.py:774] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0602 14:33:14.642000 45667 torch/distributed/run.py:774] *****************************************
+/workspace/modded-nanogpt/snapshots/003_lr-0.002.py:27: SyntaxWarning: invalid escape sequence '\s'
+/workspace/modded-nanogpt/snapshots/003_lr-0.002.py:27: SyntaxWarning: invalid escape sequence '\s'
+/workspace/modded-nanogpt/snapshots/003_lr-0.002.py:27: SyntaxWarning: invalid escape sequence '\s'
+/workspace/modded-nanogpt/snapshots/003_lr-0.002.py:27: SyntaxWarning: invalid escape sequence '\s'
+  """
+  """
+  """
+  """
+using device: cuda:1
+using device: cuda:2
+using device: cuda:3
+using device: cuda:0
+Training DataLoader: total number of tokens: 250000000 across 3 files
+Validation DataLoader: total number of tokens: 50000000 across 1 files
+training time budget: 75.0s (5.0 single-GPU min / 4 GPUs)
+step:1/5100 train_loss:16.0073 train_time:83810ms step_avg:nanms
+step:2/5100 train_loss:9.4929 train_time:84085ms step_avg:nanms
+step:3/5100 train_loss:8.7765 train_time:84369ms step_avg:nanms
+step:4/5100 train_loss:8.2764 train_time:84649ms step_avg:nanms
+step:5/5100 train_loss:8.1358 train_time:84950ms step_avg:nanms
+step:6/5100 train_loss:7.5190 train_time:85237ms step_avg:nanms
+step:7/5100 train_loss:7.6453 train_time:85524ms step_avg:nanms
+step:8/5100 train_loss:7.4376 train_time:85828ms step_avg:nanms
+step:9/5100 train_loss:7.2046 train_time:86110ms step_avg:nanms
+step:10/5100 train_loss:7.1694 train_time:86396ms step_avg:nanms
+step:11/5100 train_loss:7.0420 train_time:265ms step_avg:nanms
+step:12/5100 train_loss:6.8237 train_time:558ms step_avg:nanms
+step:13/5100 train_loss:6.7940 train_time:857ms step_avg:285.68ms
+step:14/5100 train_loss:6.7667 train_time:1150ms step_avg:287.49ms
+step:15/5100 train_loss:6.6907 train_time:1458ms step_avg:291.58ms
+step:16/5100 train_loss:6.6789 train_time:1751ms step_avg:291.82ms
+step:17/5100 train_loss:6.7116 train_time:2040ms step_avg:291.43ms
+step:18/5100 train_loss:6.5334 train_time:2332ms step_avg:291.52ms
+step:19/5100 train_loss:6.5426 train_time:2619ms step_avg:290.95ms
+step:20/5100 train_loss:6.2082 train_time:2917ms step_avg:291.68ms
+step:21/5100 train_loss:6.5925 train_time:3206ms step_avg:291.42ms
+step:22/5100 train_loss:6.8220 train_time:3517ms step_avg:293.10ms
+step:23/5100 train_loss:6.4636 train_time:3802ms step_avg:292.48ms
+step:24/5100 train_loss:6.5786 train_time:4116ms step_avg:293.99ms
+step:25/5100 train_loss:6.2974 train_time:4409ms step_avg:293.92ms
+step:26/5100 train_loss:6.2169 train_time:4727ms step_avg:295.46ms
+step:27/5100 train_loss:6.3648 train_time:5016ms step_avg:295.08ms
+step:28/5100 train_loss:6.0305 train_time:5318ms step_avg:295.47ms
+step:29/5100 train_loss:6.3185 train_time:5625ms step_avg:296.06ms
+step:30/5100 train_loss:6.1613 train_time:5917ms step_avg:295.87ms
+step:31/5100 train_loss:6.1295 train_time:6208ms step_avg:295.62ms
+step:32/5100 train_loss:5.9476 train_time:6495ms step_avg:295.23ms
+step:33/5100 train_loss:6.2746 train_time:6805ms step_avg:295.85ms
+step:34/5100 train_loss:6.1736 train_time:7120ms step_avg:296.68ms
+step:35/5100 train_loss:6.3473 train_time:7411ms step_avg:296.45ms
+step:36/5100 train_loss:6.2619 train_time:7695ms step_avg:295.98ms
+step:37/5100 train_loss:6.1456 train_time:8001ms step_avg:296.33ms
+step:38/5100 train_loss:6.0425 train_time:8287ms step_avg:295.96ms
+step:39/5100 train_loss:6.0765 train_time:8592ms step_avg:296.26ms
+step:40/5100 train_loss:5.9852 train_time:8879ms step_avg:295.98ms
+step:41/5100 train_loss:6.0185 train_time:9164ms step_avg:295.61ms
+step:42/5100 train_loss:5.8899 train_time:9460ms step_avg:295.61ms
+step:43/5100 train_loss:5.9779 train_time:9749ms step_avg:295.43ms
+step:44/5100 train_loss:5.9620 train_time:10041ms step_avg:295.33ms
+step:45/5100 train_loss:6.1226 train_time:10329ms step_avg:295.12ms
+step:46/5100 train_loss:5.9337 train_time:10626ms step_avg:295.15ms
+step:47/5100 train_loss:5.7832 train_time:10940ms step_avg:295.67ms
+step:48/5100 train_loss:6.0045 train_time:11253ms step_avg:296.13ms
+step:49/5100 train_loss:5.8759 train_time:11559ms step_avg:296.37ms
+step:50/5100 train_loss:6.0365 train_time:11849ms step_avg:296.23ms
+step:51/5100 train_loss:5.8943 train_time:12141ms step_avg:296.12ms
+step:52/5100 train_loss:5.7457 train_time:12430ms step_avg:295.94ms
+step:53/5100 train_loss:5.8785 train_time:12735ms step_avg:296.17ms
+step:53/5100 val_loss:5.8440 train_time:12759ms step_avg:296.71ms
+step:54/5100 train_loss:5.7741 train_time:13024ms step_avg:296.00ms
+step:55/5100 train_loss:6.0968 train_time:13343ms step_avg:296.51ms
+step:56/5100 train_loss:5.7647 train_time:13658ms step_avg:296.91ms
+step:57/5100 train_loss:5.6445 train_time:13946ms step_avg:296.72ms
+step:58/5100 train_loss:5.7901 train_time:14247ms step_avg:296.82ms
+step:59/5100 train_loss:5.7501 train_time:14537ms step_avg:296.67ms
+step:60/5100 train_loss:5.8333 train_time:14844ms step_avg:296.89ms
+step:61/5100 train_loss:5.6220 train_time:15131ms step_avg:296.69ms
+step:62/5100 train_loss:5.7248 train_time:15440ms step_avg:296.92ms
+step:63/5100 train_loss:5.7063 train_time:15728ms step_avg:296.75ms
+step:64/5100 train_loss:5.6275 train_time:16018ms step_avg:296.64ms
+step:65/5100 train_loss:5.5092 train_time:16309ms step_avg:296.52ms
+step:66/5100 train_loss:5.6872 train_time:16605ms step_avg:296.53ms
+step:67/5100 train_loss:5.5523 train_time:16902ms step_avg:296.53ms
+step:68/5100 train_loss:5.7871 train_time:17220ms step_avg:296.90ms
+step:69/5100 train_loss:5.4639 train_time:17517ms step_avg:296.89ms
+step:70/5100 train_loss:5.4743 train_time:17824ms step_avg:297.07ms
+step:71/5100 train_loss:5.6808 train_time:18126ms step_avg:297.15ms
+step:72/5100 train_loss:5.6144 train_time:18434ms step_avg:297.33ms
+step:73/5100 train_loss:5.4980 train_time:18723ms step_avg:297.19ms
+step:74/5100 train_loss:5.6138 train_time:19031ms step_avg:297.36ms
+step:75/5100 train_loss:5.5831 train_time:19332ms step_avg:297.41ms
+step:76/5100 train_loss:5.5492 train_time:19624ms step_avg:297.33ms
+step:77/5100 train_loss:5.6331 train_time:19919ms step_avg:297.30ms
+step:78/5100 train_loss:5.6703 train_time:20212ms step_avg:297.24ms
+step:79/5100 train_loss:5.4770 train_time:20529ms step_avg:297.52ms
+step:80/5100 train_loss:5.5915 train_time:20838ms step_avg:297.69ms
+step:81/5100 train_loss:5.3663 train_time:21127ms step_avg:297.56ms
+step:82/5100 train_loss:5.5307 train_time:21413ms step_avg:297.41ms
+step:83/5100 train_loss:5.4866 train_time:21724ms step_avg:297.59ms
+step:84/5100 train_loss:5.4592 train_time:22010ms step_avg:297.43ms
+step:85/5100 train_loss:5.3218 train_time:22300ms step_avg:297.33ms
+step:86/5100 train_loss:5.5361 train_time:22591ms step_avg:297.25ms
+step:87/5100 train_loss:5.4444 train_time:22878ms step_avg:297.11ms
+step:88/5100 train_loss:5.4988 train_time:23185ms step_avg:297.24ms
+step:89/5100 train_loss:5.4719 train_time:23470ms step_avg:297.09ms
+step:90/5100 train_loss:5.3888 train_time:23762ms step_avg:297.02ms
+step:91/5100 train_loss:5.3776 train_time:24055ms step_avg:296.98ms
+step:92/5100 train_loss:5.4859 train_time:24344ms step_avg:296.88ms
+step:93/5100 train_loss:5.3273 train_time:24630ms step_avg:296.75ms
+step:94/5100 train_loss:5.3219 train_time:24922ms step_avg:296.69ms
+step:95/5100 train_loss:5.3521 train_time:25210ms step_avg:296.58ms
+step:95/5100 val_loss:5.3333 train_time:25233ms step_avg:296.85ms
+step:96/5100 train_loss:5.2684 train_time:25494ms step_avg:296.44ms
+step:97/5100 train_loss:5.3356 train_time:25795ms step_avg:296.50ms
+step:98/5100 train_loss:5.2643 train_time:26081ms step_avg:296.38ms
+step:99/5100 train_loss:5.3830 train_time:26398ms step_avg:296.60ms
+step:100/5100 train_loss:5.3433 train_time:26710ms step_avg:296.77ms
+step:101/5100 train_loss:5.2770 train_time:27017ms step_avg:296.90ms
+step:102/5100 train_loss:5.3501 train_time:27336ms step_avg:297.13ms
+step:103/5100 train_loss:5.3060 train_time:27644ms step_avg:297.25ms
+step:104/5100 train_loss:5.1434 train_time:27932ms step_avg:297.15ms
+step:105/5100 train_loss:5.2479 train_time:28233ms step_avg:297.19ms
+step:106/5100 train_loss:5.4511 train_time:28528ms step_avg:297.17ms
+step:107/5100 train_loss:5.2293 train_time:28821ms step_avg:297.12ms
+step:108/5100 train_loss:5.0064 train_time:29126ms step_avg:297.20ms
+step:109/5100 train_loss:5.2000 train_time:29436ms step_avg:297.33ms
+step:110/5100 train_loss:5.1777 train_time:29732ms step_avg:297.32ms
+step:111/5100 train_loss:5.1447 train_time:30020ms step_avg:297.23ms
+step:112/5100 train_loss:5.2481 train_time:30315ms step_avg:297.21ms
+step:113/5100 train_loss:5.1670 train_time:30608ms step_avg:297.16ms
+step:114/5100 train_loss:5.0237 train_time:30900ms step_avg:297.11ms
+step:115/5100 train_loss:5.1850 train_time:31189ms step_avg:297.04ms
+step:116/5100 train_loss:5.0726 train_time:31496ms step_avg:297.13ms
+step:117/5100 train_loss:5.0479 train_time:31812ms step_avg:297.31ms
+step:118/5100 train_loss:5.1826 train_time:32125ms step_avg:297.45ms
+step:119/5100 train_loss:5.1487 train_time:32438ms step_avg:297.60ms
+step:120/5100 train_loss:5.0751 train_time:32734ms step_avg:297.58ms
+step:121/5100 train_loss:4.9716 train_time:33045ms step_avg:297.70ms
+step:122/5100 train_loss:5.0823 train_time:33334ms step_avg:297.62ms
+step:123/5100 train_loss:4.9435 train_time:33624ms step_avg:297.56ms
+step:124/5100 train_loss:5.2418 train_time:33916ms step_avg:297.51ms
+step:125/5100 train_loss:5.1155 train_time:34225ms step_avg:297.61ms
+step:126/5100 train_loss:5.0667 train_time:34541ms step_avg:297.76ms
+step:127/5100 train_loss:5.1339 train_time:34830ms step_avg:297.69ms
+step:128/5100 train_loss:4.9875 train_time:35122ms step_avg:297.64ms
+step:129/5100 train_loss:5.2876 train_time:35422ms step_avg:297.66ms
+step:130/5100 train_loss:5.0498 train_time:35713ms step_avg:297.61ms
+step:131/5100 train_loss:5.0578 train_time:36024ms step_avg:297.72ms
+step:132/5100 train_loss:5.0091 train_time:36315ms step_avg:297.66ms
+step:133/5100 train_loss:5.0496 train_time:36617ms step_avg:297.70ms
+step:134/5100 train_loss:4.9474 train_time:36927ms step_avg:297.80ms
+step:135/5100 train_loss:5.0548 train_time:37222ms step_avg:297.77ms
+step:136/5100 train_loss:4.8463 train_time:37511ms step_avg:297.71ms
+step:136/5100 val_loss:4.9891 train_time:37541ms step_avg:297.94ms
+step:137/5100 train_loss:4.9983 train_time:37808ms step_avg:297.70ms
+step:138/5100 train_loss:4.9524 train_time:38099ms step_avg:297.65ms
+step:139/5100 train_loss:4.9673 train_time:38390ms step_avg:297.60ms
+step:140/5100 train_loss:5.0334 train_time:38681ms step_avg:297.55ms
+step:141/5100 train_loss:4.9168 train_time:38974ms step_avg:297.51ms
+step:142/5100 train_loss:4.9833 train_time:39261ms step_avg:297.43ms
+step:143/5100 train_loss:4.8224 train_time:39553ms step_avg:297.39ms
+step:144/5100 train_loss:4.9696 train_time:39846ms step_avg:297.36ms
+step:145/5100 train_loss:4.9104 train_time:40138ms step_avg:297.32ms
+step:146/5100 train_loss:4.8080 train_time:40429ms step_avg:297.27ms
+step:147/5100 train_loss:4.9440 train_time:40718ms step_avg:297.21ms
+step:148/5100 train_loss:4.9325 train_time:41011ms step_avg:297.18ms
+step:149/5100 train_loss:4.9813 train_time:41343ms step_avg:297.43ms
+step:150/5100 train_loss:4.9936 train_time:41633ms step_avg:297.38ms
+step:151/5100 train_loss:4.8963 train_time:41928ms step_avg:297.36ms
+step:152/5100 train_loss:4.8889 train_time:42223ms step_avg:297.34ms
+step:153/5100 train_loss:4.9717 train_time:42518ms step_avg:297.33ms
+step:154/5100 train_loss:4.9140 train_time:42807ms step_avg:297.27ms
+step:155/5100 train_loss:4.8805 train_time:43095ms step_avg:297.21ms
+step:156/5100 train_loss:4.9061 train_time:43389ms step_avg:297.19ms
+step:157/5100 train_loss:5.0181 train_time:43680ms step_avg:297.15ms
+step:158/5100 train_loss:4.8117 train_time:43971ms step_avg:297.10ms
+step:159/5100 train_loss:4.8771 train_time:44260ms step_avg:297.05ms
+step:160/5100 train_loss:4.7168 train_time:44553ms step_avg:297.02ms
+step:161/5100 train_loss:4.8863 train_time:44843ms step_avg:296.97ms
+step:162/5100 train_loss:4.9170 train_time:45132ms step_avg:296.92ms
+step:163/5100 train_loss:4.9092 train_time:45423ms step_avg:296.88ms
+step:164/5100 train_loss:4.7250 train_time:45719ms step_avg:296.88ms
+step:165/5100 train_loss:4.8421 train_time:46022ms step_avg:296.91ms
+step:166/5100 train_loss:4.9829 train_time:46310ms step_avg:296.86ms
+step:167/5100 train_loss:4.7653 train_time:46599ms step_avg:296.81ms
+step:168/5100 train_loss:4.8683 train_time:46891ms step_avg:296.78ms
+step:169/5100 train_loss:4.7196 train_time:47179ms step_avg:296.72ms
+step:170/5100 train_loss:4.6302 train_time:47474ms step_avg:296.71ms
+step:171/5100 train_loss:4.7732 train_time:47766ms step_avg:296.68ms
+step:172/5100 train_loss:4.7464 train_time:48053ms step_avg:296.63ms
+step:173/5100 train_loss:4.8062 train_time:48349ms step_avg:296.62ms
+step:174/5100 train_loss:4.9531 train_time:48638ms step_avg:296.57ms
+step:175/5100 train_loss:4.8176 train_time:48929ms step_avg:296.54ms
+step:176/5100 train_loss:4.6705 train_time:49226ms step_avg:296.54ms
+step:177/5100 train_loss:4.6338 train_time:49522ms step_avg:296.54ms
+step:178/5100 train_loss:4.6960 train_time:49817ms step_avg:296.53ms
+step:179/5100 train_loss:4.7137 train_time:50106ms step_avg:296.49ms
+step:179/5100 val_loss:4.7431 train_time:50131ms step_avg:296.63ms
+step:180/5100 train_loss:4.7059 train_time:50403ms step_avg:296.49ms
+step:181/5100 train_loss:4.8333 train_time:50690ms step_avg:296.43ms
+step:182/5100 train_loss:4.7043 train_time:50971ms step_avg:296.35ms
+step:183/5100 train_loss:4.6516 train_time:51261ms step_avg:296.31ms
+step:184/5100 train_loss:4.6728 train_time:51553ms step_avg:296.28ms
+step:185/5100 train_loss:4.7907 train_time:51840ms step_avg:296.23ms
+step:186/5100 train_loss:4.6914 train_time:52129ms step_avg:296.19ms
+step:187/5100 train_loss:4.9009 train_time:52417ms step_avg:296.14ms
+step:188/5100 train_loss:4.7125 train_time:52705ms step_avg:296.10ms
+step:189/5100 train_loss:4.6343 train_time:52993ms step_avg:296.05ms
+step:190/5100 train_loss:4.7726 train_time:53297ms step_avg:296.10ms
+step:191/5100 train_loss:4.8271 train_time:53972ms step_avg:298.19ms
+step:192/5100 train_loss:4.6269 train_time:54276ms step_avg:298.22ms
+step:193/5100 train_loss:4.6802 train_time:54580ms step_avg:298.25ms
+step:194/5100 train_loss:4.6576 train_time:54876ms step_avg:298.24ms
+step:195/5100 train_loss:4.6301 train_time:55160ms step_avg:298.16ms
+step:196/5100 train_loss:4.6363 train_time:55451ms step_avg:298.12ms
+step:197/5100 train_loss:4.6899 train_time:55740ms step_avg:298.07ms
+step:198/5100 train_loss:4.5314 train_time:56041ms step_avg:298.09ms
+step:199/5100 train_loss:4.7647 train_time:56328ms step_avg:298.03ms
+step:200/5100 train_loss:4.6891 train_time:56614ms step_avg:297.97ms
+step:201/5100 train_loss:5.5121 train_time:56907ms step_avg:297.94ms
+step:202/5100 train_loss:4.8793 train_time:57195ms step_avg:297.89ms
+step:203/5100 train_loss:4.6263 train_time:57486ms step_avg:297.86ms
+step:204/5100 train_loss:4.5853 train_time:57773ms step_avg:297.80ms
+step:205/5100 train_loss:4.5970 train_time:58062ms step_avg:297.76ms
+step:206/5100 train_loss:4.5551 train_time:58355ms step_avg:297.73ms
+step:207/5100 train_loss:4.6324 train_time:58641ms step_avg:297.67ms
+step:208/5100 train_loss:4.5090 train_time:58929ms step_avg:297.62ms
+step:209/5100 train_loss:4.6397 train_time:59231ms step_avg:297.64ms
+step:210/5100 train_loss:4.4967 train_time:59516ms step_avg:297.58ms
+step:211/5100 train_loss:4.5735 train_time:59805ms step_avg:297.54ms
+step:212/5100 train_loss:4.5841 train_time:60094ms step_avg:297.50ms
+step:213/5100 train_loss:4.5355 train_time:60384ms step_avg:297.46ms
+step:214/5100 train_loss:4.5360 train_time:60671ms step_avg:297.41ms
+step:215/5100 train_loss:4.6319 train_time:60957ms step_avg:297.35ms
+step:216/5100 train_loss:4.5242 train_time:61246ms step_avg:297.31ms
+step:217/5100 train_loss:4.5651 train_time:61533ms step_avg:297.26ms
+step:218/5100 train_loss:4.5329 train_time:61827ms step_avg:297.25ms
+step:219/5100 train_loss:4.4169 train_time:62114ms step_avg:297.19ms
+step:220/5100 train_loss:4.5629 train_time:62406ms step_avg:297.17ms
+[rank0]:[E602 14:46:01.041243517 ProcessGroupNCCL.cpp:685] [Rank 0] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=5939, OpType=ALLREDUCE, NumelIn=589824, NumelOut=589824, Timeout(ms)=600000) ran for 600000 milliseconds before timing out.
+[rank0]:[E602 14:46:01.045228234 ProcessGroupNCCL.cpp:2252] [PG ID 0 PG GUID 0(default_pg) Rank 0]  failure detected by watchdog at work sequence id: 5939 PG status: last enqueued work: 5951, last completed work: 5938
+[rank0]:[E602 14:46:01.045280373 ProcessGroupNCCL.cpp:732] Stack trace of the failed collective not found, potentially because FlightRecorder is disabled. You can enable it by setting TORCH_NCCL_TRACE_BUFFER_SIZE to a non-zero value.
+[rank0]:[E602 14:46:01.045382181 ProcessGroupNCCL.cpp:2584] [PG ID 0 PG GUID 0(default_pg) Rank 0] First PG on this rank to signal dumping.
+[rank3]:[E602 14:46:01.071667346 ProcessGroupNCCL.cpp:1806] [PG ID 0 PG GUID 0(default_pg) Rank 3] Observed flight recorder dump signal from another rank via TCPStore.
+[rank3]:[E602 14:46:01.072941433 ProcessGroupNCCL.cpp:1870] [PG ID 0 PG GUID 0(default_pg) Rank 3] Received a dump signal due to a collective timeout from  rank 0 and we will try our best to dump the debug info. Last enqueued NCCL work: 5939, last completed NCCL work: 5938.This is most likely caused by incorrect usages of collectives, e.g., wrong sizes used across ranks, the order of collectives is not same for all ranks or the scheduled collective, for some reason, didn't run. Additionally, this can be caused by GIL deadlock or other reasons such as network errors or bugs in the communications library (e.g. NCCL), etc. 
+[rank3]:[E602 14:46:01.073763502 ProcessGroupNCCL.cpp:1589] [PG ID 0 PG GUID 0(default_pg) Rank 3] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1
+[rank2]:[E602 14:46:01.084137929 ProcessGroupNCCL.cpp:1806] [PG ID 0 PG GUID 0(default_pg) Rank 2] Observed flight recorder dump signal from another rank via TCPStore.
+[rank2]:[E602 14:46:01.085526926 ProcessGroupNCCL.cpp:1870] [PG ID 0 PG GUID 0(default_pg) Rank 2] Received a dump signal due to a collective timeout from  rank 0 and we will try our best to dump the debug info. Last enqueued NCCL work: 5939, last completed NCCL work: 5938.This is most likely caused by incorrect usages of collectives, e.g., wrong sizes used across ranks, the order of collectives is not same for all ranks or the scheduled collective, for some reason, didn't run. Additionally, this can be caused by GIL deadlock or other reasons such as network errors or bugs in the communications library (e.g. NCCL), etc. 
+[rank2]:[E602 14:46:01.086109253 ProcessGroupNCCL.cpp:1589] [PG ID 0 PG GUID 0(default_pg) Rank 2] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1
+[rank0]:[E602 14:46:01.150588565 ProcessGroupNCCL.cpp:1870] [PG ID 0 PG GUID 0(default_pg) Rank 0] Received a dump signal due to a collective timeout from this local rank and we will try our best to dump the debug info. Last enqueued NCCL work: 5951, last completed NCCL work: 5938.This is most likely caused by incorrect usages of collectives, e.g., wrong sizes used across ranks, the order of collectives is not same for all ranks or the scheduled collective, for some reason, didn't run. Additionally, this can be caused by GIL deadlock or other reasons such as network errors or bugs in the communications library (e.g. NCCL), etc. 
+[rank0]:[E602 14:46:01.150983669 ProcessGroupNCCL.cpp:1589] [PG ID 0 PG GUID 0(default_pg) Rank 0] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1
+[rank1]:[E602 14:46:02.036122691 ProcessGroupNCCL.cpp:1806] [PG ID 0 PG GUID 0(default_pg) Rank 1] Observed flight recorder dump signal from another rank via TCPStore.
+[rank1]:[E602 14:46:02.036457119 ProcessGroupNCCL.cpp:1870] [PG ID 0 PG GUID 0(default_pg) Rank 1] Received a dump signal due to a collective timeout from  rank 0 and we will try our best to dump the debug info. Last enqueued NCCL work: 5939, last completed NCCL work: 5938.This is most likely caused by incorrect usages of collectives, e.g., wrong sizes used across ranks, the order of collectives is not same for all ranks or the scheduled collective, for some reason, didn't run. Additionally, this can be caused by GIL deadlock or other reasons such as network errors or bugs in the communications library (e.g. NCCL), etc. 
+[rank1]:[E602 14:46:02.036889798 ProcessGroupNCCL.cpp:1589] [PG ID 0 PG GUID 0(default_pg) Rank 1] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1
+[rank2]:[E602 14:46:03.007887300 ProcessGroupNCCL.cpp:685] [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=5939, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600004 milliseconds before timing out.
+[rank2]:[E602 14:46:03.008604980 ProcessGroupNCCL.cpp:2252] [PG ID 0 PG GUID 0(default_pg) Rank 2]  failure detected by watchdog at work sequence id: 5939 PG status: last enqueued work: 5939, last completed work: 5938
+[rank2]:[E602 14:46:03.008623905 ProcessGroupNCCL.cpp:732] Stack trace of the failed collective not found, potentially because FlightRecorder is disabled. You can enable it by setting TORCH_NCCL_TRACE_BUFFER_SIZE to a non-zero value.
+[rank1]:[E602 14:46:03.019698537 ProcessGroupNCCL.cpp:685] [Rank 1] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=5939, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600036 milliseconds before timing out.
+[rank1]:[E602 14:46:03.020094534 ProcessGroupNCCL.cpp:2252] [PG ID 0 PG GUID 0(default_pg) Rank 1]  failure detected by watchdog at work sequence id: 5939 PG status: last enqueued work: 5939, last completed work: 5938
+[rank1]:[E602 14:46:03.020110568 ProcessGroupNCCL.cpp:732] Stack trace of the failed collective not found, potentially because FlightRecorder is disabled. You can enable it by setting TORCH_NCCL_TRACE_BUFFER_SIZE to a non-zero value.
+[rank3]:[E602 14:46:03.020793325 ProcessGroupNCCL.cpp:685] [Rank 3] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=5939, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600014 milliseconds before timing out.
+[rank3]:[E602 14:46:03.021554270 ProcessGroupNCCL.cpp:2252] [PG ID 0 PG GUID 0(default_pg) Rank 3]  failure detected by watchdog at work sequence id: 5939 PG status: last enqueued work: 5939, last completed work: 5938
+[rank3]:[E602 14:46:03.021574007 ProcessGroupNCCL.cpp:732] Stack trace of the failed collective not found, potentially because FlightRecorder is disabled. You can enable it by setting TORCH_NCCL_TRACE_BUFFER_SIZE to a non-zero value.
+[rank0]:[E602 14:47:01.643112910 ProcessGroupNCCL.cpp:746] [Rank 0] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank0]:[E602 14:47:01.643149424 ProcessGroupNCCL.cpp:760] [Rank 0] To avoid data inconsistency, we are taking the entire process down.
+[rank0]:[E602 14:47:01.646308869 ProcessGroupNCCL.cpp:2068] [PG ID 0 PG GUID 0(default_pg) Rank 0] Process group watchdog thread terminated with exception: [Rank 0] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=5939, OpType=ALLREDUCE, NumelIn=589824, NumelOut=589824, Timeout(ms)=600000) ran for 600000 milliseconds before timing out.
+Exception raised from checkTimeout at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:688 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x80 (0x7a26eda12eb0 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x247 (0x7a26ee8d4147 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x1591 (0x7a26ee8d7b61 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::Watchdog::run() + 0xd2 (0x7a26ee8d8ec2 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x7a274c529db4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x7a274eaa4aa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: __clone + 0x44 (0x7a274eb31a64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+terminate called after throwing an instance of 'c10::DistBackendError'
+  what():  [PG ID 0 PG GUID 0(default_pg) Rank 0] Process group watchdog thread terminated with exception: [Rank 0] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=5939, OpType=ALLREDUCE, NumelIn=589824, NumelOut=589824, Timeout(ms)=600000) ran for 600000 milliseconds before timing out.
+Exception raised from checkTimeout at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:688 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x80 (0x7a26eda12eb0 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x247 (0x7a26ee8d4147 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x1591 (0x7a26ee8d7b61 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::Watchdog::run() + 0xd2 (0x7a26ee8d8ec2 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x7a274c529db4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x7a274eaa4aa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: __clone + 0x44 (0x7a274eb31a64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+Exception raised from run at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2074 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x80 (0x7a26eda12eb0 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0xe1c1a1 (0x7a26ee8b01a1 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0x9468e6 (0x7a26ee3da8e6 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #3: <unknown function> + 0xecdb4 (0x7a274c529db4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #4: <unknown function> + 0x9caa4 (0x7a274eaa4aa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #5: __clone + 0x44 (0x7a274eb31a64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+[rank2]:[E602 14:47:03.191514582 ProcessGroupNCCL.cpp:746] [Rank 2] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank2]:[E602 14:47:03.191564760 ProcessGroupNCCL.cpp:760] [Rank 2] To avoid data inconsistency, we are taking the entire process down.
+[rank2]:[E602 14:47:03.195129741 ProcessGroupNCCL.cpp:2068] [PG ID 0 PG GUID 0(default_pg) Rank 2] Process group watchdog thread terminated with exception: [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=5939, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600004 milliseconds before timing out.
+Exception raised from checkTimeout at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:688 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x80 (0x7e9af1c12eb0 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x247 (0x7e9af2ad4147 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x1591 (0x7e9af2ad7b61 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::Watchdog::run() + 0xd2 (0x7e9af2ad8ec2 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x7e9b50752db4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x7e9b52ccdaa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: __clone + 0x44 (0x7e9b52d5aa64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+terminate called after throwing an instance of 'c10::DistBackendError'
+  what():  [PG ID 0 PG GUID 0(default_pg) Rank 2] Process group watchdog thread terminated with exception: [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=5939, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600004 milliseconds before timing out.
+Exception raised from checkTimeout at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:688 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x80 (0x7e9af1c12eb0 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x247 (0x7e9af2ad4147 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x1591 (0x7e9af2ad7b61 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::Watchdog::run() + 0xd2 (0x7e9af2ad8ec2 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x7e9b50752db4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x7e9b52ccdaa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: __clone + 0x44 (0x7e9b52d5aa64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+Exception raised from run at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2074 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x80 (0x7e9af1c12eb0 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0xe1c1a1 (0x7e9af2ab01a1 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0x9468e6 (0x7e9af25da8e6 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #3: <unknown function> + 0xecdb4 (0x7e9b50752db4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #4: <unknown function> + 0x9caa4 (0x7e9b52ccdaa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #5: __clone + 0x44 (0x7e9b52d5aa64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+[rank3]:[E602 14:47:03.617915074 ProcessGroupNCCL.cpp:746] [Rank 3] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank3]:[E602 14:47:03.617949995 ProcessGroupNCCL.cpp:760] [Rank 3] To avoid data inconsistency, we are taking the entire process down.
+[rank1]:[E602 14:47:03.618885186 ProcessGroupNCCL.cpp:746] [Rank 1] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank1]:[E602 14:47:03.618914456 ProcessGroupNCCL.cpp:760] [Rank 1] To avoid data inconsistency, we are taking the entire process down.
+[rank3]:[E602 14:47:03.620284144 ProcessGroupNCCL.cpp:2068] [PG ID 0 PG GUID 0(default_pg) Rank 3] Process group watchdog thread terminated with exception: [Rank 3] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=5939, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600014 milliseconds before timing out.
+Exception raised from checkTimeout at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:688 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x80 (0x7e59832d9eb0 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x247 (0x7e59268d4147 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x1591 (0x7e59268d7b61 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::Watchdog::run() + 0xd2 (0x7e59268d8ec2 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x7e5984587db4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x7e5986b02aa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: __clone + 0x44 (0x7e5986b8fa64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+terminate called after throwing an instance of 'c10::DistBackendError'
+[rank1]:[E602 14:47:03.621191665 ProcessGroupNCCL.cpp:2068] [PG ID 0 PG GUID 0(default_pg) Rank 1] Process group watchdog thread terminated with exception: [Rank 1] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=5939, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600036 milliseconds before timing out.
+Exception raised from checkTimeout at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:688 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x80 (0x794d058d9eb0 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x247 (0x794ca8ed4147 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x1591 (0x794ca8ed7b61 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::Watchdog::run() + 0xd2 (0x794ca8ed8ec2 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x794d06baadb4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x794d09125aa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: __clone + 0x44 (0x794d091b2a64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+terminate called after throwing an instance of 'c10::DistBackendError'
+  what():  [PG ID 0 PG GUID 0(default_pg) Rank 3] Process group watchdog thread terminated with exception: [Rank 3] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=5939, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600014 milliseconds before timing out.
+Exception raised from checkTimeout at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:688 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x80 (0x7e59832d9eb0 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x247 (0x7e59268d4147 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x1591 (0x7e59268d7b61 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::Watchdog::run() + 0xd2 (0x7e59268d8ec2 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x7e5984587db4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x7e5986b02aa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: __clone + 0x44 (0x7e5986b8fa64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+Exception raised from run at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2074 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x80 (0x7e59832d9eb0 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0xe1c1a1 (0x7e59268b01a1 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0x9468e6 (0x7e59263da8e6 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #3: <unknown function> + 0xecdb4 (0x7e5984587db4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #4: <unknown function> + 0x9caa4 (0x7e5986b02aa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #5: __clone + 0x44 (0x7e5986b8fa64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+  what():  [PG ID 0 PG GUID 0(default_pg) Rank 1] Process group watchdog thread terminated with exception: [Rank 1] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=5939, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600036 milliseconds before timing out.
+Exception raised from checkTimeout at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:688 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x80 (0x794d058d9eb0 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x247 (0x794ca8ed4147 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::Watchdog::runLoop() + 0x1591 (0x794ca8ed7b61 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::Watchdog::run() + 0xd2 (0x794ca8ed8ec2 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x794d06baadb4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x794d09125aa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: __clone + 0x44 (0x794d091b2a64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+Exception raised from run at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:2074 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x80 (0x794d058d9eb0 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0xe1c1a1 (0x794ca8eb01a1 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0x9468e6 (0x794ca89da8e6 in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #3: <unknown function> + 0xecdb4 (0x794d06baadb4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #4: <unknown function> + 0x9caa4 (0x794d09125aa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #5: __clone + 0x44 (0x794d091b2a64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+W0602 14:47:13.438000 45667 torch/distributed/elastic/multiprocessing/api.py:900] Sending process 45753 closing signal SIGTERM
+W0602 14:47:13.441000 45667 torch/distributed/elastic/multiprocessing/api.py:900] Sending process 45754 closing signal SIGTERM
+W0602 14:47:13.443000 45667 torch/distributed/elastic/multiprocessing/api.py:900] Sending process 45755 closing signal SIGTERM
+E0602 14:47:43.126000 45667 torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: -6) local_rank: 0 (pid: 45752) of binary: /usr/local/bin/python
+Traceback (most recent call last):
+  File "/usr/local/bin/torchrun", line 7, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 357, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/distributed/run.py", line 901, in main
+    run(args)
+  File "/usr/local/lib/python3.12/dist-packages/torch/distributed/run.py", line 892, in run
+    elastic_launch(
+  File "/usr/local/lib/python3.12/dist-packages/torch/distributed/launcher/api.py", line 143, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/distributed/launcher/api.py", line 277, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+==========================================================
+/workspace/modded-nanogpt/snapshots/003_lr-0.002.py FAILED
+----------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+----------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-06-02_14:47:13
+  host      : f4976bc75b33
+  rank      : 0 (local_rank: 0)
+  exitcode  : -6 (pid: 45752)
+  error_file: <N/A>
+  traceback : Signal 6 (SIGABRT) received by PID 45752
+==========================================================

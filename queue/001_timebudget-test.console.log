@@ -1,0 +1,22 @@
+W0602 14:06:44.410000 16064 torch/distributed/run.py:774] 
+W0602 14:06:44.410000 16064 torch/distributed/run.py:774] *****************************************
+W0602 14:06:44.410000 16064 torch/distributed/run.py:774] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0602 14:06:44.410000 16064 torch/distributed/run.py:774] *****************************************
+/workspace/modded-nanogpt/snapshots/001_timebudget-test.py:27: SyntaxWarning: invalid escape sequence '\s'/workspace/modded-nanogpt/snapshots/001_timebudget-test.py
+:27: SyntaxWarning: invalid escape sequence '\s'
+/workspace/modded-nanogpt/snapshots/001_timebudget-test.py:27: SyntaxWarning: invalid escape sequence '\s'
+/workspace/modded-nanogpt/snapshots/001_timebudget-test.py:27: SyntaxWarning: invalid escape sequence '\s'
+  """
+  """
+  """
+  """
+using device: cuda:0
+using device: cuda:2
+using device: cuda:1
+using device: cuda:3
+Training DataLoader: total number of tokens: 250000000 across 3 files
+Validation DataLoader: total number of tokens: 50000000 across 1 files
+training time budget: 75.0s (5.0 single-GPU min / 4 GPUs)
+step:1/5100 train_loss:16.0467 train_time:153517ms step_avg:nanms
+step:1/5100 val_loss:9.6329 train_time:153581ms step_avg:nanms
+peak memory consumption: 30975 MiB

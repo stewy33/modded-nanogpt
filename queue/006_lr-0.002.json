@@ -1,0 +1,18 @@
+{
+  "id": "006_lr-0.002",
+  "seq": 6,
+  "name": "lr-0.002",
+  "source": "/workspace/modded-nanogpt/snapshots/003_lr-0.002.py",
+  "snapshot": "snapshots/006_lr-0.002.py",
+  "console": "queue/006_lr-0.002.console.log",
+  "nproc": 4,
+  "status": "cancelled",
+  "submitted_at": "2026-06-02T14:50:16",
+  "started_at": "2026-06-02T14:54:51",
+  "finished_at": "2026-06-02T14:56:33",
+  "pid": null,
+  "run_uuid": "6f80acaf-f8a0-4f79-8ad0-b2bf6736149d",
+  "logfile": "logs/6f80acaf-f8a0-4f79-8ad0-b2bf6736149d.txt",
+  "exit_code": -15,
+  "cancel_requested": true
+}
