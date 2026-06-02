@@ -1,4 +1,6 @@
 fineweb10B/
 pylog124M/
 __pycache__/
-logs/
+*.pt
+.session_deadline
+runs/
