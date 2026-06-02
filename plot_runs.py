@@ -42,6 +42,13 @@ RUNS = {
     "bs128_lr0.0062": "logs/022_bs128_lr0.0062_b67e436a-09c1-43a5-9a76-391fbcdbbb90.txt",
     "bs128_lr0.0067": "logs/020_bs128_lr0.0067_f1217391-9dac-4e53-af73-50ce8d38b2ef.txt",
     "bs128_lr0.008": "logs/019_bs128_lr0.008_4f90fb14-f6b8-4afa-9855-0334dc0657b1.txt",
+    # LR search at bs64
+    "bs64_lr0.002": "logs/024_bs64_lr0.002_ebd97d98-c93a-4cd5-87a6-3954bc560759.txt",
+    "bs64_lr0.0025": "logs/028_bs64_lr0.0025_dc5ee5e5-0641-40d5-ad03-475b9fbbc6ea.txt",
+    "bs64_lr0.003": "logs/025_bs64_lr0.003_112a1d35-822d-4056-aab8-c6b0993f581b.txt",
+    "bs64_lr0.0035": "logs/029_bs64_lr0.0035_735f4b56-070a-44c4-bbe6-a549c36850b9.txt",
+    "bs64_lr0.004": "logs/026_bs64_lr0.004_cec02a96-728d-498f-8d96-9619fc25de4a.txt",
+    "bs64_lr0.006": "logs/027_bs64_lr0.006_5efcb70d-fe21-4475-9f9c-cafb3861018d.txt",
 }
 
 # refresh the plots every REFRESH_SECONDS while training is ongoing
@@ -105,7 +112,7 @@ def parse_log(path: str):
     return out
 
 
-def draw(runs: dict, axes=None):
+def draw(runs: dict, axes=None, ylim=(4, 7)):
     """Draw the four plots for all runs onto `axes` (created if None)."""
     if axes is None:
         _, axes = plt.subplots(4, 1, figsize=(8, 20))
@@ -155,12 +162,12 @@ def draw(runs: dict, axes=None):
         if d["val_loss"]:
             final_val[name] = (color, d["val_loss"][-1])
 
-    ax_step.set(xlabel="step", ylabel="loss", title="loss vs step", ylim=(4, 7))
-    ax_tok.set(xlabel="train tokens", ylabel="loss", title="loss vs tokens", ylim=(4, 7))
+    ax_step.set(xlabel="step", ylabel="loss", title="loss vs step", ylim=ylim)
+    ax_tok.set(xlabel="train tokens", ylabel="loss", title="loss vs tokens", ylim=ylim)
     ax_time.set(
         xlabel="wall-clock train time (s)", ylabel="loss",
         title="loss vs wall-clock time",
-        ylim=(4, 7)
+        ylim=ylim
     )
 
     # fourth plot: bar chart of final validation loss per run
@@ -202,5 +209,24 @@ if __name__ == "__main__":
     else:
         draw(RUNS)
         plt.show()
+
+# %%
+# ---------------------------------------------------------------------------
+# Final challenge: the two best configs (bs128 and bs64, each at its own tuned
+# LR) run on a SINGLE GPU for the full 5-minute budget. The challenge must run
+# on 1 GPU, so total_train_minutes=5.0 -> a full 300s wall-clock run each.
+# Same four-plot style as above, but for just these two runs.
+# ---------------------------------------------------------------------------
+FINAL_RUNS = {
+    "bs128_lr0.0058 (1gpu, 5min)":
+        "logs/final_1gpu_bs128_lr0.0058_c5f1ca91-06b3-40ab-bbed-cc645f47d914.txt",
+    "bs64_lr0.003 (1gpu, 5min)":
+        "logs/final_1gpu_bs64_lr0.003_fd639e5c-9cf0-4cae-96d8-cf85d8927469.txt",
+}
+
+# these full-length runs converge well below the 75s runs, so use a tighter window
+_, final_axes = plt.subplots(4, 1, figsize=(8, 20))
+draw(FINAL_RUNS, final_axes, ylim=(3.7, 6.0))
+plt.show()
 
 # %%
