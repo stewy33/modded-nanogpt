@@ -20,7 +20,7 @@ Basic infra I might want:
 - For the queing system, i want to be able to override, delete, etc. How should we represent hte queue? Maybe just as a file?
 - In order to do orchestration, one idea is that every time I kick off a run, it saves the code for hte file. Let's keep everything single file for now to keep it simple. This sounds great for now. So the main thing I'll need is the queing system. And I would love for ongoing runs to also be figure outable, like we want to know for ongoing runs which logfile they are currently writing to.
 
-9:33 am: I'm 15 minutes in. I am still figuring out infra. I can't spend more than 15 minutes more on this. I think I'm actually going to go to a 4 gpu parallel per run strategy so I can iterate faster, ideally every 1.5 minutes. I am also having claude code implement a queing system. The queing system is the first part I don't fully understand yet, so let's make sure I do. Added the teach skill to help here.
+9:33 am: I'm 15 minutes in. I am still figuring out infra. I can't spend more than 15 minutes more on this. I think I'm actually going to go to a 4 gpu parallel per run strategy so I can iterate faster, ideally every 1.5 minutes. I am also having claude code implement a queing system.G The queing system is the first part I don't fully understand yet, so let's make sure I do. Added the teach skill to help here.
 
 9:45 am: Unfortunately, I previously started the wrong runpod instance and it only had 1 gpu. Just finished redoing setup on the 4 gpu machine.
 
@@ -35,3 +35,23 @@ Currently waiting for CC to finish somei infrastructure, but then will do a base
 10:54 am: Checked in with Aayush. I am now getting some benefits to the learning rate tuning and found 0.003 seemed to work better than what I had.
 
 11:02 am: Looks like the smalelr batch size is definitely helping. We can continue to do binary search on batch size for a while. Batch size 128 does even better than 256 or 512, bu tonly marginally better than 256. Trying 64 now, robably won't work well here. Tuned lr by sqrt of batch size. Will do additional tunin gafter.
+
+Did more experiments and wrote up a short report of what I did.
+
+===== 2.5 hour mark =====
+
+4:22 pm: Took a break. Now I will do another 2.5 hours. I will build on top of this, so the task continues the same but I have an additional 2.5 hour allocation. I can now get to more researchy stuff. However, it may still be worthwhile to do additional tuning, not sure.
+
+Overall, I'm seeing agents are good at autonomously doing hyperparameter tuning. So I will let them run their separate single gpu rusn to do that. I'm giving claude code 2 gpus to do batch size and LR tuning and I'll use the other 2 for more creative things.
+
+Claude code thinks we should consider tuning:
+1. Optimizer — cheapest, highest-confidence wins, and you're already here.
+  - The Muon:AdamW LR ratio is hardcoded at 0.1*lr (line 436). This is your "V1 vs RMW" — almost certainly worth decoupling
+  into two independent LRs and sweeping. The 0.1 is inherited, not tuned for your batch size.
+  - Muon momentum=0.95, nesterov=True, backend_steps=5. Fewer NS steps = faster/step but worse orthogonalization — a direct
+  throughput↔quality knob.
+  - AdamW betas (0.9, 0.95). In a ~few-hundred-step run, beta2 warmup matters a lot — second moment barely converges.
+  - weight_decay=0 — correct for this regime, low priority.
+Overall, I think this could be good to keep doing in the first window that's doing HP tuning. I think the LR ratio thing is worth trying. Then omentum and adamw betas? I guess I'd want to see if our steps stay too small at first in some way. we could log athat as a statistic as well. But do that aft erh tebatch size and LR tuning happens.
+
+4:37 pm: Starting with some profiling now. There is a wait and warmup period for the profiler over the first few steps so we don't get the wrong kind of timing.

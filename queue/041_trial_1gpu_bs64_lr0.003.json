@@ -1,0 +1,24 @@
+{
+  "id": "041_trial_1gpu_bs64_lr0.003",
+  "seq": 41,
+  "name": "trial_1gpu_bs64_lr0.003",
+  "source": "/workspace/modded-nanogpt/train_gpt2.py",
+  "snapshot": "snapshots/041_trial_1gpu_bs64_lr0.003.py",
+  "console": "queue/041_trial_1gpu_bs64_lr0.003.console.log",
+  "allowed_gpus": [
+    0
+  ],
+  "nproc": 1,
+  "assigned_gpus": [
+    0
+  ],
+  "status": "running",
+  "submitted_at": "2026-06-02T20:41:39",
+  "started_at": "2026-06-02T20:41:41",
+  "finished_at": null,
+  "pid": 25905,
+  "run_uuid": "041_trial_1gpu_bs64_lr0.003_5c779a0e-d677-4844-8550-102a8aa3617a",
+  "logfile": "logs/041_trial_1gpu_bs64_lr0.003_5c779a0e-d677-4844-8550-102a8aa3617a.txt",
+  "exit_code": null,
+  "cancel_requested": false
+}

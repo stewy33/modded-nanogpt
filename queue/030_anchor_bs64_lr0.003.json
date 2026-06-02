@@ -1,0 +1,25 @@
+{
+  "id": "030_anchor_bs64_lr0.003",
+  "seq": 30,
+  "name": "anchor_bs64_lr0.003",
+  "source": "/workspace/modded-nanogpt/train_gpt2.py",
+  "snapshot": "snapshots/030_anchor_bs64_lr0.003.py",
+  "console": "queue/030_anchor_bs64_lr0.003.console.log",
+  "allowed_gpus": [
+    2,
+    3
+  ],
+  "nproc": 1,
+  "assigned_gpus": [
+    2
+  ],
+  "status": "done",
+  "submitted_at": "2026-06-02T20:34:18",
+  "started_at": "2026-06-02T20:34:20",
+  "finished_at": "2026-06-02T20:42:51",
+  "pid": null,
+  "run_uuid": "030_anchor_bs64_lr0.003_cc329e48-3c25-4ea7-96bd-70369bf987a7",
+  "logfile": "logs/030_anchor_bs64_lr0.003_cc329e48-3c25-4ea7-96bd-70369bf987a7.txt",
+  "exit_code": 0,
+  "cancel_requested": false
+}

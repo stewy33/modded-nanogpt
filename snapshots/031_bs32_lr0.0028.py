@@ -366,11 +366,11 @@ class Hyperparameters:
     train_token_limit : int = 180_000_000 # cap on the number of distinct train tokens to use (loader cycles within them); None for all
     val_token_limit : int = 50_000_000 # cap on the number of distinct val tokens to use; None for all
     # optimization hyperparams
-    batch_size : int = 1*64 # batch size, in sequences, across all devices
-    device_batch_size : int = 16 # batch size, in sequences, per device
+    batch_size : int = 32  # overridden by run.py
+    device_batch_size : int = 32  # overridden by run.py
     sequence_length : int = 1024 # sequence length, in tokens
     num_iterations : int = 5100 # safety upper bound on steps; the real stop is the time budget below
-    learning_rate : float = 0.0035 # LR search at bs64 (narrowing)
+    learning_rate : float = 0.0028  # overridden by run.py
     weight_decay : float = 0
     # time budget: single-GPU-equivalent training minutes. The actual wall-clock stop is
     # total_train_minutes / num_gpus, because the global batch is fixed regardless of GPU
@@ -479,43 +479,6 @@ evals_done = 0 # number of spread-out validations completed so far
 if master_process:
     print(f"training time budget: {train_time_budget_ms/1000:.1f}s "
           f"({args.total_train_minutes} single-GPU min / {ddp_world_size} GPUs)")
-
-# -----------------------------------------------------------------------------
-# optional PyTorch profiler — opt-in via PROFILE=1, OFF by default so the timed
-# benchmark path is behavior-identical when unset. We deliberately profile only a
-# handful of STEADY-STATE steps: torch.compile makes the first ~10 steps wildly
-# unrepresentative (graph compilation), which is the same reason the loop resets
-# its own timer at step 10. The schedule is counted in prof.step() calls (one per
-# loop iteration): WAIT past the compile region, WARMUP so the profiler + caching
-# allocator settle, then record ACTIVE clean steps. We profile on the master rank
-# only (one trace, not four) and stop the run right after capture.
-import contextlib
-from torch.profiler import profile, schedule, ProfilerActivity
-PROF_WAIT, PROF_WARMUP, PROF_ACTIVE = 12, 3, 6
-use_profiler = bool(int(os.environ.get("PROFILE", "0"))) and master_process
-
-def _on_trace_ready(p):
-    # heaviest ops by total GPU time, grouped by input shape so we can attribute
-    # time to specific matmuls (attn qkv/proj vs MLP fc/proj vs the 50304-wide
-    # lm_head) — plus a chrome trace for the timeline (gaps = CPU-launch-bound).
-    table = p.key_averages(group_by_input_shape=True).table(sort_by="cuda_time_total", row_limit=30)
-    print(table)
-    with open(logfile, "a") as f:
-        f.write(table + "\n")
-    p.export_chrome_trace(os.path.join(logdir, "trace.json"))
-    print(f"[profiler] chrome trace -> {logdir}trace.json (view in chrome://tracing or perfetto.dev)")
-
-prof = None
-if use_profiler:
-    prof = profile(
-        activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
-        schedule=schedule(wait=PROF_WAIT, warmup=PROF_WARMUP, active=PROF_ACTIVE, repeat=1),
-        on_trace_ready=_on_trace_ready,
-        record_shapes=True,   # needed for the per-shape attribution above; modest overhead
-        profile_memory=False, # we're not memory-bound here; skip to keep overhead low
-        with_stack=False,     # stack unwinding is expensive and distorts timing; flip on for a source-attributed run
-    )
-    prof.start()
 
 training_time_ms = 0
 # start the clock
@@ -633,16 +596,6 @@ for step in range(args.num_iterations + 1):
         print(f"step:{step+1}/{args.num_iterations} train_loss:{train_loss.item():.4f} train_time:{approx_time:.0f}ms step_avg:{approx_time/timed_steps:.2f}ms")
         with open(logfile, "a") as f:
             f.write(f"step:{step+1}/{args.num_iterations} train_loss:{train_loss.item():.4f} train_time:{approx_time:.0f}ms step_avg:{approx_time/timed_steps:.2f}ms\n")
-
-    # advance the profiler one step (no-op until its WAIT window elapses). Once the
-    # ACTIVE window is captured, _on_trace_ready has fired, so stop and exit early —
-    # no point burning the rest of the time budget on an instrumented run.
-    if prof is not None:
-        prof.step()
-        if step >= PROF_WAIT + PROF_WARMUP + PROF_ACTIVE:
-            prof.stop()
-            print("[profiler] captured steady-state steps; stopping run early")
-            break
 
 if master_process:
     print(f"peak memory consumption: {torch.cuda.max_memory_allocated() // 1024 // 1024} MiB")

@@ -1,0 +1,23 @@
+{
+  "id": "034_bs32_lr0.0040",
+  "seq": 34,
+  "name": "bs32_lr0.0040",
+  "source": "/workspace/modded-nanogpt/train_gpt2.py",
+  "snapshot": "snapshots/034_bs32_lr0.0040.py",
+  "console": "queue/034_bs32_lr0.0040.console.log",
+  "allowed_gpus": [
+    2,
+    3
+  ],
+  "nproc": 1,
+  "assigned_gpus": null,
+  "status": "queued",
+  "submitted_at": "2026-06-02T20:37:04",
+  "started_at": null,
+  "finished_at": null,
+  "pid": null,
+  "run_uuid": null,
+  "logfile": null,
+  "exit_code": null,
+  "cancel_requested": false
+}
