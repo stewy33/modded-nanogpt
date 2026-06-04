@@ -50,15 +50,18 @@ model trains on more tokens and reaches lower loss**:
 | 10 | — | — | (pending/optional) |
 | 8 | 113 | 2670 | 3.8252 |
 | 6 | 96  | 3145 | **3.8158** |
-| 4 | 71  | ~4400 | (running) |
+| 4 | 76  | 3962 | 3.8393 |
 
-The trend `12 > 8 > 6` confirms the hypothesis, though gains shrink (−0.037, then −0.009),
-suggesting we're approaching the depth sweet spot. `n_layer=4` is being tested to find the floor.
+Depth is **U-shaped with the optimum at 6 layers**: `4 (3.8393) > 6 (3.8158) < 8 (3.8252) < 12
+(3.8621)`. At 4 layers the capacity floor is hit — even with ~4000 steps it loses to 6L. Notably
+the smaller models lead *early* (more steps) but capacity matters in the warmdown/late phase, which
+is why the ordering flips by 300s.
 
-## What's next / remaining levers
-- Finish the depth floor (l4) and pick the best depth.
-- One tuning run on the winner (warmdown fraction / minor width).
-- Clean final re-verification run of the chosen best config.
+## 4. Schedule tuning
+Testing a longer warmdown (`warmdown_frac` 0.28 → 0.45) on the 6-layer winner.
+
+## Remaining
+- Schedule tuning result, then a clean final re-verification of the chosen best config.
 
 ## Plots
 ![trajectories](img/trajectories.png)
