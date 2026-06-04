@@ -15,6 +15,7 @@
   --bs 32        override Hyperparameters.batch_size in the frozen snapshot
   --lr 0.002     override Hyperparameters.learning_rate in the frozen snapshot
   --dbs 16       override Hyperparameters.device_batch_size in the frozen snapshot
+  --steps 3      override Hyperparameters.muon_backend_steps in the frozen snapshot
 
 Each run gets its own tmux window (named after the run) in the worker's session.
 The window shows a WAITING banner while queued, then live training output once the
@@ -159,11 +160,11 @@ def _patch_hyperparam(text, field, typ, value):
 def cmd_add(argv):
     if len(argv) < 2:
         sys.exit("usage: python3 run.py add <file.py> <name> "
-                 "[--gpus 2,3] [--nproc 1] [--bs 32] [--lr 0.002] [--dbs 16]")
+                 "[--gpus 2,3] [--nproc 1] [--bs 32] [--lr 0.002] [--dbs 16] [--steps 3]")
     src, name, opts = argv[0], argv[1], argv[2:]
 
     # parse the optional flags
-    gpus = nproc = bs = lr = dbs = None
+    gpus = nproc = bs = lr = dbs = steps = None
     i = 0
     while i < len(opts):
         k = opts[i]
@@ -175,6 +176,7 @@ def cmd_add(argv):
         elif k == "--bs":   bs = v
         elif k == "--lr":   lr = v
         elif k == "--dbs":  dbs = v
+        elif k == "--steps": steps = v
         else:               sys.exit("unknown flag %r" % k)
         i += 2
 
@@ -205,6 +207,7 @@ def cmd_add(argv):
     if bs is not None:  text = _patch_hyperparam(text, "batch_size", "int", bs)
     if lr is not None:  text = _patch_hyperparam(text, "learning_rate", "float", lr)
     if dbs is not None: text = _patch_hyperparam(text, "device_batch_size", "int", dbs)
+    if steps is not None: text = _patch_hyperparam(text, "muon_backend_steps", "int", steps)
     with open(snap, "w") as f:  # frozen (optionally patched) snapshot = source of truth
         f.write(text)
 
@@ -222,7 +225,7 @@ def cmd_add(argv):
         "exit_code": None, "cancel_requested": False,
     })
     overrides = ", ".join(
-        "%s=%s" % (k, v) for k, v in (("bs", bs), ("lr", lr), ("dbs", dbs)) if v is not None)
+        "%s=%s" % (k, v) for k, v in (("bs", bs), ("lr", lr), ("dbs", dbs), ("steps", steps)) if v is not None)
     print("queued %s  (gpus=%s nproc=%d%s)  snapshot: snapshots/%s.py" % (
         eid, allowed, nproc, "  " + overrides if overrides else "", eid))
     open_window(eid)

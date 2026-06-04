@@ -1,0 +1,24 @@
+{
+  "id": "042_docmask-base-1gpu-bs64",
+  "seq": 42,
+  "name": "docmask-base-1gpu-bs64",
+  "source": "/workspace/modded-nanogpt/train_gpt2.py",
+  "snapshot": "snapshots/042_docmask-base-1gpu-bs64.py",
+  "console": "queue/042_docmask-base-1gpu-bs64.console.log",
+  "allowed_gpus": [
+    1
+  ],
+  "nproc": 1,
+  "assigned_gpus": [
+    1
+  ],
+  "status": "done",
+  "submitted_at": "2026-06-02T20:55:12",
+  "started_at": "2026-06-02T20:55:14",
+  "finished_at": "2026-06-02T21:02:27",
+  "pid": null,
+  "run_uuid": "042_docmask-base-1gpu-bs64_a6af56ee-1408-4f54-a2ba-abe540b189b8",
+  "logfile": "logs/042_docmask-base-1gpu-bs64_a6af56ee-1408-4f54-a2ba-abe540b189b8.txt",
+  "exit_code": 0,
+  "cancel_requested": false
+}

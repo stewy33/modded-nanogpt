@@ -1,0 +1,27 @@
+{
+  "id": "049_bs64_lr0.003_steps5",
+  "seq": 49,
+  "name": "bs64_lr0.003_steps5",
+  "source": "/workspace/modded-nanogpt/train_gpt2.py",
+  "snapshot": "snapshots/049_bs64_lr0.003_steps5.py",
+  "console": "queue/049_bs64_lr0.003_steps5.console.log",
+  "allowed_gpus": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "nproc": 1,
+  "assigned_gpus": [
+    1
+  ],
+  "status": "cancelled",
+  "submitted_at": "2026-06-02T21:18:04",
+  "started_at": "2026-06-02T21:23:46",
+  "finished_at": "2026-06-02T21:28:06",
+  "pid": null,
+  "run_uuid": "049_bs64_lr0.003_steps5_aea980fb-afcf-436f-9c13-7d5c4ab906aa",
+  "logfile": "logs/049_bs64_lr0.003_steps5_aea980fb-afcf-436f-9c13-7d5c4ab906aa.txt",
+  "exit_code": -15,
+  "cancel_requested": true
+}

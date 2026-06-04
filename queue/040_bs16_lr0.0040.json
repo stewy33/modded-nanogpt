@@ -11,13 +11,13 @@
   ],
   "nproc": 1,
   "assigned_gpus": null,
-  "status": "queued",
+  "status": "cancelled",
   "submitted_at": "2026-06-02T20:37:05",
   "started_at": null,
-  "finished_at": null,
+  "finished_at": "2026-06-02T21:11:32",
   "pid": null,
   "run_uuid": null,
   "logfile": null,
   "exit_code": null,
-  "cancel_requested": false
+  "cancel_requested": true
 }

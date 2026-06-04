@@ -1,0 +1,25 @@
+{
+  "id": "048_bs96_lr0.0050",
+  "seq": 48,
+  "name": "bs96_lr0.0050",
+  "source": "/workspace/modded-nanogpt/train_gpt2.py",
+  "snapshot": "snapshots/048_bs96_lr0.0050.py",
+  "console": "queue/048_bs96_lr0.0050.console.log",
+  "allowed_gpus": [
+    0,
+    1
+  ],
+  "nproc": 1,
+  "assigned_gpus": [
+    1
+  ],
+  "status": "done",
+  "submitted_at": "2026-06-02T21:16:11",
+  "started_at": "2026-06-02T21:16:13",
+  "finished_at": "2026-06-02T21:23:46",
+  "pid": null,
+  "run_uuid": "048_bs96_lr0.0050_6b4c14fe-4a63-4e31-bff7-a835b36f9489",
+  "logfile": "logs/048_bs96_lr0.0050_6b4c14fe-4a63-4e31-bff7-a835b36f9489.txt",
+  "exit_code": 0,
+  "cancel_requested": false
+}

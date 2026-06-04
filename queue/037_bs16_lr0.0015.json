@@ -10,14 +10,16 @@
     3
   ],
   "nproc": 1,
-  "assigned_gpus": null,
-  "status": "queued",
+  "assigned_gpus": [
+    3
+  ],
+  "status": "done",
   "submitted_at": "2026-06-02T20:37:04",
-  "started_at": null,
-  "finished_at": null,
+  "started_at": "2026-06-02T20:57:44",
+  "finished_at": "2026-06-02T21:04:47",
   "pid": null,
-  "run_uuid": null,
-  "logfile": null,
-  "exit_code": null,
+  "run_uuid": "037_bs16_lr0.0015_604e3aa6-8cb5-47c5-9583-b5697a25c504",
+  "logfile": "logs/037_bs16_lr0.0015_604e3aa6-8cb5-47c5-9583-b5697a25c504.txt",
+  "exit_code": 0,
   "cancel_requested": false
 }

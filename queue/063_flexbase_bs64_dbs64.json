@@ -1,0 +1,25 @@
+{
+  "id": "063_flexbase_bs64_dbs64",
+  "seq": 63,
+  "name": "flexbase_bs64_dbs64",
+  "source": "/workspace/modded-nanogpt/train_gpt2.py",
+  "snapshot": "snapshots/063_flexbase_bs64_dbs64.py",
+  "console": "queue/063_flexbase_bs64_dbs64.console.log",
+  "allowed_gpus": [
+    2,
+    3
+  ],
+  "nproc": 1,
+  "assigned_gpus": [
+    2
+  ],
+  "status": "failed",
+  "submitted_at": "2026-06-02T22:04:20",
+  "started_at": "2026-06-02T22:04:22",
+  "finished_at": "2026-06-04T16:39:43",
+  "pid": 117979,
+  "run_uuid": "063_flexbase_bs64_dbs64_66d55e67-b518-4b79-af08-2826048bdb6f",
+  "logfile": "logs/063_flexbase_bs64_dbs64_66d55e67-b518-4b79-af08-2826048bdb6f.txt",
+  "exit_code": null,
+  "cancel_requested": false
+}

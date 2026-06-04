@@ -1,0 +1,25 @@
+{
+  "id": "059_cce_bs64_lr0.0035",
+  "seq": 59,
+  "name": "cce_bs64_lr0.0035",
+  "source": "/workspace/modded-nanogpt/train_gpt2.py",
+  "snapshot": "snapshots/059_cce_bs64_lr0.0035.py",
+  "console": "queue/059_cce_bs64_lr0.0035.console.log",
+  "allowed_gpus": [
+    2,
+    3
+  ],
+  "nproc": 1,
+  "assigned_gpus": [
+    2
+  ],
+  "status": "cancelled",
+  "submitted_at": "2026-06-02T21:38:55",
+  "started_at": "2026-06-02T21:42:05",
+  "finished_at": "2026-06-02T21:44:00",
+  "pid": null,
+  "run_uuid": "059_cce_bs64_lr0.0035_0a75c59f-81c8-4475-9d8d-420e06de5cc7",
+  "logfile": "logs/059_cce_bs64_lr0.0035_0a75c59f-81c8-4475-9d8d-420e06de5cc7.txt",
+  "exit_code": -15,
+  "cancel_requested": true
+}

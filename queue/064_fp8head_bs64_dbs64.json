@@ -1,0 +1,25 @@
+{
+  "id": "064_fp8head_bs64_dbs64",
+  "seq": 64,
+  "name": "fp8head_bs64_dbs64",
+  "source": "/workspace/modded-nanogpt/train_gpt2_fp8head.py",
+  "snapshot": "snapshots/064_fp8head_bs64_dbs64.py",
+  "console": "queue/064_fp8head_bs64_dbs64.console.log",
+  "allowed_gpus": [
+    2,
+    3
+  ],
+  "nproc": 1,
+  "assigned_gpus": [
+    3
+  ],
+  "status": "failed",
+  "submitted_at": "2026-06-02T22:04:20",
+  "started_at": "2026-06-02T22:04:22",
+  "finished_at": "2026-06-04T16:39:43",
+  "pid": 118046,
+  "run_uuid": "064_fp8head_bs64_dbs64_7fe81e03-f981-47ab-8acb-9126b5e829f2",
+  "logfile": "logs/064_fp8head_bs64_dbs64_7fe81e03-f981-47ab-8acb-9126b5e829f2.txt",
+  "exit_code": null,
+  "cancel_requested": false
+}

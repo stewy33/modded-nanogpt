@@ -55,3 +55,40 @@ Claude code thinks we should consider tuning:
 Overall, I think this could be good to keep doing in the first window that's doing HP tuning. I think the LR ratio thing is worth trying. Then omentum and adamw betas? I guess I'd want to see if our steps stay too small at first in some way. we could log athat as a statistic as well. But do that aft erh tebatch size and LR tuning happens.
 
 4:37 pm: Starting with some profiling now. There is a wait and warmup period for the profiler over the first few steps so we don't get the wrong kind of timing.
+
+4:50 pm: Now using flex attention with document boundaries. This was a no-brainer. Also doing a run with perfetto traces with pytorch profiler logging. I notice not that much of the GPU's memory is being used. Everything is so small here this might just be how it is. A larger batch size doesn't help. But I do wonder if we have extra memory if there are ways we can trade off that fact for more speed.
+
+
+5:10 pm: I'm 7 minutes short of the hour. My current priorities are to maybe tune the bs 64 a bit more on one gpu, figure out why flexattention isn't helping.
+
+And then kick off one expeirment based off of the performance study I saw.
+
+5:19 pm: I have a little less than an hour left. Let me think about hwat I'm doing. There is more tuning going on, but I need to move to adam vs muon tuning soon. There is also flex attention that I need to resolve. And ns steps tuning (easy win).
+
+The next big thing to do is the unembedding matrix. Hw do we address that? I think we could avoid materializing it in some way?
+
+5:40 pm: I have 35 minutes left. I see flex attention helped once I compiled the block mask thing to prevent the slowdown. It seems like increasing neuton schulz iterations also helps a bit? Concerned this might interact with other hps badly but maybe okay for now? Very small improvements but it is around 0.005. Flex attention did like 0.01.
+
+I am next using a faster kernel for hte lm head, which should help a lot. Holding off fancier tricks to deal with it. Looking into any other addition clear kernsl or dhitngs i shoudl be using.
+
+I thought the kernel was faster but CCE (Cut Cross Entropy) actually just saves memory by avoiding materializing some large thing, by later recomputing it. So it saves memory but makes things slower, which is not what we want at such low batch size. So the last thing I'm running is the fp8 head.
+
+Finally, I'm taking 5 minutes with the /teach skill to try to understand the code. I think I will be over 2 hours though, but I lost the timer.
+
+Things I would do if I had more time
+- Understand the code better
+- See if there are any no-brainer kernel improvements or data loading improvements that don't change the logic of the code, just make it faster. In particular, we're in a weird regime where we have lots of free memory and just want to avoid any extra computations that we could, so maybe there are special kernels for this?
+- Get fp8 working properly (I suspect there might be instability if I just do it straight on the llm head). I would also want to do fp8 training to the mlps or the entire network. If it was unstable I suspect I'd need to 1) keep activations and certain weights in bf16 and keep only some in fp8, but I don't know the convention here 2) consuider using softcap or something similar to prevent magnitudes from growing too large, especially in the LM head
+
+Takeaways to understand better in the future
+- How pytorch DDP works and alternatives, i.e. does every process run the exact same python code just with a different environment variable? How does `synchronize` work and are there other primitives I should know about?
+- How and why does Muon work? And intuitively, why is it not good for the lm head?
+- What is the right way to set the sequence length here for training? Why don't we instead just traing with batch size of 1, and have a max cutoff length?
+- How sensitive is the lm head and why is it so much more sensitive than other parameters? And how to deal with this if we want to quantize?
+- During quantization, how can I tell if I'm having issues with precision or dynamic range? Is there a principled approach besides retraining?
+- Meta-level
+  - Think clearly about infra for running lots of small parallel experiments. I think there are reusable patterns here that work across lots of problems with that same shape. Then there are other problems with a different shape, where you don't get many iterations. I should practice these as well to come up with a good workflow.
+  - Just having multiple Claude Code sessions in different terminal tabs is not that bad. But I can probably optimize further.
+  - Asking the AI, "given my constraints and objective, is this a good idea?" would've caught the CCE issue and saved 10 minutes. Similarly if I asked this about fp8 head, it probably could've done a better yolo run for numerical stability than what I did.
+  - It was easy for the AI to write code without bugs in this case for the most part. On problems where that is not the case, I probably would need to trust the AI much less.
+  - The /teach skill is not that amazing yet. I think I kind of need to go through the code manually and have the AI teach me for now.

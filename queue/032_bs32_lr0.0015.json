@@ -13,13 +13,13 @@
   "assigned_gpus": [
     2
   ],
-  "status": "running",
+  "status": "done",
   "submitted_at": "2026-06-02T20:37:03",
   "started_at": "2026-06-02T20:42:53",
-  "finished_at": null,
-  "pid": 27605,
+  "finished_at": "2026-06-02T20:50:14",
+  "pid": null,
   "run_uuid": "032_bs32_lr0.0015_6ad2b55c-70c5-4a35-93d7-91709f74cea5",
   "logfile": "logs/032_bs32_lr0.0015_6ad2b55c-70c5-4a35-93d7-91709f74cea5.txt",
-  "exit_code": null,
+  "exit_code": 0,
   "cancel_requested": false
 }

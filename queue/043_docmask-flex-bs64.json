@@ -1,0 +1,25 @@
+{
+  "id": "043_docmask-flex-bs64",
+  "seq": 43,
+  "name": "docmask-flex-bs64",
+  "source": "/workspace/modded-nanogpt/train_gpt2_docmask.py",
+  "snapshot": "snapshots/043_docmask-flex-bs64.py",
+  "console": "queue/043_docmask-flex-bs64.console.log",
+  "allowed_gpus": [
+    0,
+    1
+  ],
+  "nproc": 1,
+  "assigned_gpus": [
+    0
+  ],
+  "status": "done",
+  "submitted_at": "2026-06-02T20:59:59",
+  "started_at": "2026-06-02T21:00:01",
+  "finished_at": "2026-06-02T21:07:56",
+  "pid": null,
+  "run_uuid": "043_docmask-flex-bs64_7a9624ce-ed1c-4bda-b4fe-1e1956fbd8a4",
+  "logfile": "logs/043_docmask-flex-bs64_7a9624ce-ed1c-4bda-b4fe-1e1956fbd8a4.txt",
+  "exit_code": 0,
+  "cancel_requested": false
+}

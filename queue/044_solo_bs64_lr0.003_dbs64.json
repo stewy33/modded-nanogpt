@@ -1,0 +1,24 @@
+{
+  "id": "044_solo_bs64_lr0.003_dbs64",
+  "seq": 44,
+  "name": "solo_bs64_lr0.003_dbs64",
+  "source": "/workspace/modded-nanogpt/train_gpt2.py",
+  "snapshot": "snapshots/044_solo_bs64_lr0.003_dbs64.py",
+  "console": "queue/044_solo_bs64_lr0.003_dbs64.console.log",
+  "allowed_gpus": [
+    2
+  ],
+  "nproc": 1,
+  "assigned_gpus": [
+    2
+  ],
+  "status": "cancelled",
+  "submitted_at": "2026-06-02T21:12:39",
+  "started_at": "2026-06-02T21:12:40",
+  "finished_at": "2026-06-02T21:15:32",
+  "pid": null,
+  "run_uuid": "044_solo_bs64_lr0.003_dbs64_f22b6ba2-a861-45ab-b9d9-0c6dd593c5cf",
+  "logfile": "logs/044_solo_bs64_lr0.003_dbs64_f22b6ba2-a861-45ab-b9d9-0c6dd593c5cf.txt",
+  "exit_code": -15,
+  "cancel_requested": true
+}

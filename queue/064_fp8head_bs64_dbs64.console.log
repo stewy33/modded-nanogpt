@@ -1,0 +1,6 @@
+/workspace/modded-nanogpt/snapshots/064_fp8head_bs64_dbs64.py:31: SyntaxWarning: invalid escape sequence '\s'
+  """
+using device: cuda:0
+Training DataLoader: total number of tokens: 180000000 across 2 files
+Validation DataLoader: total number of tokens: 50000000 across 1 files
+training time budget: 300.0s (5.0 single-GPU min / 1 GPUs)

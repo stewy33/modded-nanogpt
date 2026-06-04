@@ -1,0 +1,7 @@
+/workspace/modded-nanogpt/snapshots/063_flexbase_bs64_dbs64.py:31: SyntaxWarning: invalid escape sequence '\s'
+  """
+using device: cuda:0
+Training DataLoader: total number of tokens: 180000000 across 2 files
+Validation DataLoader: total number of tokens: 50000000 across 1 files
+training time budget: 300.0s (5.0 single-GPU min / 1 GPUs)
+step:1/5100 train_loss:16.0221 train_time:83972ms step_avg:nanms

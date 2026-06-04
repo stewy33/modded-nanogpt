@@ -1,0 +1,27 @@
+{
+  "id": "062_bs64_lr0.003_steps7_nocce",
+  "seq": 62,
+  "name": "bs64_lr0.003_steps7_nocce",
+  "source": "/workspace/modded-nanogpt/train_gpt2_nocce.py",
+  "snapshot": "snapshots/062_bs64_lr0.003_steps7_nocce.py",
+  "console": "queue/062_bs64_lr0.003_steps7_nocce.console.log",
+  "allowed_gpus": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "nproc": 1,
+  "assigned_gpus": [
+    0
+  ],
+  "status": "done",
+  "submitted_at": "2026-06-02T21:51:56",
+  "started_at": "2026-06-02T21:51:58",
+  "finished_at": "2026-06-02T21:59:06",
+  "pid": null,
+  "run_uuid": "062_bs64_lr0.003_steps7_nocce_ce7ece5f-bb75-417a-be33-be1813a69b80",
+  "logfile": "logs/062_bs64_lr0.003_steps7_nocce_ce7ece5f-bb75-417a-be33-be1813a69b80.txt",
+  "exit_code": 0,
+  "cancel_requested": false
+}

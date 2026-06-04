@@ -14,6 +14,10 @@ import torch.nn.functional as F
 import torch.distributed as dist
 import torch._inductor.config as config
 from torch.nn.parallel import DistributedDataParallel as DDP
+from torch.nn.attention.flex_attention import flex_attention, create_block_mask
+# Guarantee the fused Triton kernel rather than the eager fallback. PyTorch explicitly
+# recommends compiling flex_attention; this is the canonical way to do it.
+flex_attention = torch.compile(flex_attention)
 
 # -----------------------------------------------------------------------------
 # Muon optimizer
@@ -112,8 +116,11 @@ class Muon(torch.optim.Optimizer):
                     updates_flat[curr_idx:curr_idx+p.numel()] = g.flatten()
                 curr_idx += p.numel()
 
-            # sync updates across devices. we are not memory-constrained so can do this simple deserialization
-            dist.all_reduce(updates_flat, op=dist.ReduceOp.SUM)
+            # sync updates across devices. we are not memory-constrained so can do this simple deserialization.
+            # at world_size==1 every parameter is handled by this single rank, so the all_reduce is a no-op
+            # SUM over one buffer — skip it to avoid launching a pointless collective each optimizer step.
+            if self.world_size > 1:
+                dist.all_reduce(updates_flat, op=dist.ReduceOp.SUM)
 
             # deserialize and apply updates
             curr_idx = 0
@@ -153,6 +160,26 @@ def apply_rotary_emb(x, cos, sin):
     y2 = x1 * (-sin) + x2 * cos
     return torch.cat([y1, y2], 3).type_as(x)
 
+# <|endoftext|> (token 50256) is prepended to every document by data/fineweb.py, so it
+# marks document boundaries inside the packed token stream.
+EOT_TOKEN = 50256
+
+def build_doc_block_mask(idx):
+    """Block-diagonal causal mask: a query may attend to a key only if the key is at or
+    before it (causal) AND both lie in the SAME document. Documents are delimited by the
+    EOT token in `idx`; cumsum gives each token a per-row document id. FlexAttention skips
+    fully-masked blocks, so this is both correct (no cross-document attention) and fast
+    (the mask is block-diagonal-sparse, and FineWeb docs average ~700 tokens). Built
+    outside the compiled model and passed in, so create_block_mask stays out of the graph."""
+    B, T = idx.shape
+    docs = (idx == EOT_TOKEN).cumsum(dim=1)  # (B, T) document id per token, per row
+    def doc_causal(b, h, q_idx, kv_idx):
+        return (q_idx >= kv_idx) & (docs[b, q_idx] == docs[b, kv_idx])
+    # H=None broadcasts the same mask across all heads; B must be concrete (mask depends on b).
+    # _compile=True compiles the block-mask construction (the eager hotspot) — the purpose-built
+    # path for a mask_mod that captures a tensor (docs), so it avoids closure-guard recompiles.
+    return create_block_mask(doc_causal, B=B, H=None, Q_LEN=T, KV_LEN=T, device=idx.device, _compile=True)
+
 class CausalSelfAttention(nn.Module):
 
     def __init__(self, config):
@@ -169,7 +196,7 @@ class CausalSelfAttention(nn.Module):
         self.c_proj.weight.data.zero_() # zero init suggested by @Grad62304977
         self.rotary = Rotary(self.head_dim)
 
-    def forward(self, x):
+    def forward(self, x, block_mask):
         B, T, C = x.size() # batch size, sequence length, embedding dimensionality (n_embd)
         q = self.c_q(x).view(B, T, self.n_head, self.head_dim)
         k = self.c_k(x).view(B, T, self.n_head, self.head_dim)
@@ -177,7 +204,9 @@ class CausalSelfAttention(nn.Module):
         cos, sin = self.rotary(q)
         q, k = F.rms_norm(q, (q.size(-1),)), F.rms_norm(k, (k.size(-1),)) # QK norm suggested by @Grad62304977
         q, k = apply_rotary_emb(q, cos, sin), apply_rotary_emb(k, cos, sin)
-        y = F.scaled_dot_product_attention(q.transpose(1, 2), k.transpose(1, 2), v.transpose(1, 2), is_causal=True)
+        # flex_attention replaces SDPA's is_causal mask with the document-aware block mask
+        # (causal AND same-document). RoPE is relative, so no per-doc position reset is needed.
+        y = flex_attention(q.transpose(1, 2), k.transpose(1, 2), v.transpose(1, 2), block_mask=block_mask)
         y = y.transpose(1, 2).contiguous().view_as(x) # re-assemble all head outputs side by side
         y = self.c_proj(y)
         return y
@@ -203,8 +232,8 @@ class Block(nn.Module):
         self.attn = CausalSelfAttention(config)
         self.mlp = MLP(config)
 
-    def forward(self, x):
-        x = x + self.attn(F.rms_norm(x, (x.size(-1),)))
+    def forward(self, x, block_mask):
+        x = x + self.attn(F.rms_norm(x, (x.size(-1),)), block_mask)
         x = x + self.mlp(F.rms_norm(x, (x.size(-1),)))
         return x
 
@@ -231,12 +260,12 @@ class GPT(nn.Module):
         self.lm_head = nn.Linear(config.n_embd, config.vocab_size, bias=False)
         self.transformer.wte.weight = self.lm_head.weight # https://paperswithcode.com/method/weight-tying
 
-    def forward(self, idx, targets=None, return_logits=True):
+    def forward(self, idx, targets=None, return_logits=True, block_mask=None):
 
         # forward the GPT model itself
         x = self.transformer.wte(idx) # token embeddings of shape (b, t, n_embd)
         for block in self.transformer.h:
-            x = block(x)
+            x = block(x, block_mask)
         x = F.rms_norm(x, (x.size(-1),))
 
         if targets is not None:
@@ -320,24 +349,31 @@ class DistributedDataLoader:
         assert self.ntok_total >= num_processes * B * T + 1, \
             f"max_tokens={max_tokens} is too small for one batch across all processes"
 
-        # kick things off
+        # dedicated CUDA stream for async H2D copies, so the next batch's transfer
+        # overlaps the current step's compute on the default stream (see _prefetch).
+        self.copy_stream = torch.cuda.Stream()
+        # kick things off (reset primes the one-batch-ahead prefetch)
         self.reset()
 
     def reset(self):
         self.current_shard = 0
         self.current_position = self.process_rank * self.B * self.T
         self.tokens = _load_data_shard(self.files[self.current_shard])
+        self._prefetch() # prime the one-batch-ahead buffer
 
     def advance(self): # advance to next data shard
         self.current_shard = (self.current_shard + 1) % len(self.files)
         self.current_position = self.process_rank * self.B * self.T
         self.tokens = _load_data_shard(self.files[self.current_shard])
 
-    def next_batch(self):
+    def _materialize(self):
+        # host-side work for the batch at current_position: slice, convert to a long
+        # tensor, and pin it so the H2D copy can be async (non_blocking). Also advances
+        # current_position / shard exactly as the old next_batch did, just one batch earlier.
         B = self.B
         T = self.T
         buf = self.tokens[self.current_position : self.current_position+B*T+1]
-        buf = torch.tensor(buf.astype(np.int32), dtype=torch.long)
+        buf = torch.tensor(buf.astype(np.int32), dtype=torch.long).pin_memory()
         x = (buf[:-1]).view(B, T) # inputs
         y = (buf[1:]).view(B, T) # targets
         # advance current position and load next shard if necessary
@@ -353,7 +389,27 @@ class DistributedDataLoader:
             )
         elif self.current_position + stride + 1 > len(self.tokens):
             self.advance()
-        return x.cuda(), y.cuda()
+        return x, y
+
+    def _prefetch(self):
+        # launch the next batch's H2D copy on the side stream; it runs concurrently with
+        # whatever the default (compute) stream is doing until next_batch() consumes it.
+        x_cpu, y_cpu = self._materialize()
+        with torch.cuda.stream(self.copy_stream):
+            self.next_x = x_cpu.cuda(non_blocking=True)
+            self.next_y = y_cpu.cuda(non_blocking=True)
+
+    def next_batch(self):
+        # make the compute stream wait for the prefetch copy to land, hand off the tensors,
+        # then kick off the prefetch of the following batch. record_stream tells the caching
+        # allocator these blocks are in use on the compute stream so it won't recycle them
+        # (they were allocated on copy_stream) before the compute stream is done.
+        torch.cuda.current_stream().wait_stream(self.copy_stream)
+        x, y = self.next_x, self.next_y
+        x.record_stream(torch.cuda.current_stream())
+        y.record_stream(torch.cuda.current_stream())
+        self._prefetch()
+        return x, y
 
 # -----------------------------------------------------------------------------
 # int main
@@ -372,6 +428,7 @@ class Hyperparameters:
     num_iterations : int = 5100 # safety upper bound on steps; the real stop is the time budget below
     learning_rate : float = 0.0035 # LR search at bs64 (narrowing)
     weight_decay : float = 0
+    muon_backend_steps : int = 6 # Newton-Schulz iteration steps in Muon (orthogonalization quality vs per-step speed)
     # time budget: single-GPU-equivalent training minutes. The actual wall-clock stop is
     # total_train_minutes / num_gpus, because the global batch is fixed regardless of GPU
     # count, so N GPUs reach the identical result in ~1/N the time.
@@ -434,7 +491,7 @@ ctx = torch.amp.autocast(device_type='cuda', dtype=torch.bfloat16)
 optimizer1 = torch.optim.AdamW(raw_model.lm_head.parameters(), lr=args.learning_rate, betas=(0.9, 0.95),
                                weight_decay=args.weight_decay, fused=True)
 optimizer2 = Muon(raw_model.transformer.h.parameters(), lr=0.1*args.learning_rate, momentum=0.95,
-                  rank=ddp_rank, world_size=ddp_world_size)
+                  backend_steps=args.muon_backend_steps, rank=ddp_rank, world_size=ddp_world_size)
 optimizers = [optimizer1, optimizer2]
 # learning rate schedule as a function of elapsed-time fraction f in [0, 1]
 # (trapezoidal: linear warmup, flat, linear warmdown). Driven by time rather than
@@ -563,8 +620,9 @@ for step in range(args.num_iterations + 1):
         with torch.no_grad():
             for _ in range(val_steps):
                 x_val, y_val = val_loader.next_batch()
+                val_block_mask = build_doc_block_mask(x_val)
                 with ctx:
-                    _, loss = model(x_val, y_val, return_logits=False)
+                    _, loss = model(x_val, y_val, return_logits=False, block_mask=val_block_mask)
                     val_loss += loss.detach()
                     del loss
         dist.all_reduce(val_loss, op=dist.ReduceOp.AVG)
@@ -602,8 +660,9 @@ for step in range(args.num_iterations + 1):
     model.train()
     for i in range(1, train_accumulation_steps+1):
         # forward pass
+        block_mask = build_doc_block_mask(x)
         with ctx:
-            _, loss = model(x, y, return_logits=False)
+            _, loss = model(x, y, return_logits=False, block_mask=block_mask)
             train_loss = loss.detach()
         # advance the dataset for the next batch
         x, y = train_loader.next_batch()

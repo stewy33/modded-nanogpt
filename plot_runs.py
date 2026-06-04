@@ -218,10 +218,37 @@ if __name__ == "__main__":
 # Same four-plot style as above, but for just these two runs.
 # ---------------------------------------------------------------------------
 FINAL_RUNS = {
-    "bs128_lr0.0058 (1gpu, 5min)":
+    "bs128 lr0.0058 (3.8969)":
         "logs/final_1gpu_bs128_lr0.0058_c5f1ca91-06b3-40ab-bbed-cc645f47d914.txt",
-    "bs64_lr0.003 (1gpu, 5min)":
+    "bs64 lr0.003 SDPA, no flex (3.8779)":
         "logs/final_1gpu_bs64_lr0.003_fd639e5c-9cf0-4cae-96d8-cf85d8927469.txt",
+    # LR sweep at bs32 (single GPU, 5min)
+    "bs32_lr0.0015": "logs/032_bs32_lr0.0015_6ad2b55c-70c5-4a35-93d7-91709f74cea5.txt",
+    "bs32_lr0.0020": "logs/033_bs32_lr0.0020_8f51b28e-c26a-4c08-8810-0b2c7b223bf2.txt",
+    "bs32_lr0.0028": "logs/031_bs32_lr0.0028_ca96468e-28b4-420f-aaa3-66a159032da4.txt",
+    "bs32_lr0.0040": "logs/034_bs32_lr0.0040_94b1bfd0-056c-4bd8-86d2-5214fada0a02.txt",
+    "bs32_lr0.0055": "logs/035_bs32_lr0.0055_4349ded9-3b71-48c1-b78d-9de790e00b07.txt",
+    # LR sweep at bs16 (single GPU, 5min)
+    "bs16_lr0.0010": "logs/036_bs16_lr0.0010_e5343848-f0fc-4947-9827-7370dca1e8c4.txt",
+    "bs16_lr0.0015": "logs/037_bs16_lr0.0015_604e3aa6-8cb5-47c5-9583-b5697a25c504.txt",
+    "bs16_lr0.0022": "logs/038_bs16_lr0.0022_bbfb6ac2-3905-486e-985a-58daed490ddb.txt",
+    "bs16_lr0.0030": "logs/039_bs16_lr0.0030_185bd7ac-d6ef-495d-8033-db8b22553cd7.txt",
+    # --- strong bs64 (standard arch, the optimal config) ---
+    "bs64 lr0.0035 (3.8831)": "logs/045_bs64_lr0.0035_c24ff600-d463-4fc3-9f33-6309d49fdf4a.txt",
+    "bs64 lr0.0045 (3.8831)": "logs/046_bs64_lr0.0045_ca19be1a-6350-4757-8886-39b1f010eb37.txt",
+    # --- larger batch: bs96 ---
+    "bs96 lr0.0040 (3.8855)": "logs/047_bs96_lr0.0040_2886f8a6-792e-4220-8a56-a310d168101c.txt",
+    "bs96 lr0.0050 (3.8920)": "logs/048_bs96_lr0.0050_6b4c14fe-4a63-4e31-bff7-a835b36f9489.txt",
+    # --- doc-mask, bs64: flex attention vs none (and compiled flex) ---
+    "doc-mask, no flex (3.9088)": "logs/042_docmask-base-1gpu-bs64_a6af56ee-1408-4f54-a2ba-abe540b189b8.txt",
+    "doc-mask + flex (3.9219)": "logs/043_docmask-flex-bs64_7a9624ce-ed1c-4bda-b4fe-1e1956fbd8a4.txt",
+    "doc-mask + flex, compiled (3.8871)": "logs/054_docmask-flex-compiled-bs64_d7cc9d56-3de4-4cfc-ac58-c49408850378.txt",
+    # train_gpt2.py (compiled flex + doc-mask + optimized data loader) at the best bs64/lr0.003
+    "flex compiled, bs64 lr0.003 (BEST 3.8667)": "logs/066_flex_compiled_bs64_lr0.003_dbs64_1c3e64d8-4e48-4a71-ab92-c0a992da0c86.txt",
+    # --- cut-cross-entropy (fused linear+CE) vs standard CE (= bs64 lr0.0035 above) ---
+    "CCE fused linear+CE (3.9791)": "logs/061_cce_bs64_lr0.0035_dbs64_6d281ffd-1503-459a-ab9e-6528e6452ce9.txt",
+    # --- fp8 lm-head vs bf16 (= bs64 lr0.0035 above) ---
+    "fp8 lm-head (3.8973)": "logs/065_fp8head_bs64_dbs64_rerun_0fb07ba6-043b-4722-b901-1ab6c6a3d609.txt",
 }
 
 # these full-length runs converge well below the 75s runs, so use a tighter window
