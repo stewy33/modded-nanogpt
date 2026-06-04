@@ -9,3 +9,4 @@ Budget: `total_train_minutes=5.0`, `--nproc_per_node=1`. Metric = final `val_los
 | bs128 | bs=128, dbs=128, no grad-accum (~4x steps) | 3.8619 | 1098 | 276ms | big win over baseline |
 | bs64 | bs=64, dbs=64, no grad-accum (~8x steps) | 3.8621 | 1956 | 154ms | ties bs128; batch benefit saturated |
 | bs64_lr0050 | bs64, lr=5.0e-3 | 3.8694 | 1943 | 155ms | ~tie; LR insensitive |
+| bs64_lr0024 | bs64, lr=2.4e-3 | ~4.18@180s | (stopped) | 153ms | tracked lr0036; LR insensitive, stopped early |
