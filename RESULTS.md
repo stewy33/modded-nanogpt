@@ -39,6 +39,7 @@ before we discovered only 1 GPU exists; not re-run since 128/64 already characte
 | b_lr47 | LR 3.6e-3→4.7e-3 | 3.7996 | ~tie (slightly behind throughout) — LR insensitivity reconfirmed at w640 |
 | b_mom98 | Muon momentum 0.95→0.98 | 4.6722 @60s (stopped) | LOSE badly — high momentum overshoots in short run; 0.95 optimal |
 | b_wd1 | weight_decay 0→0.1 | 4.1829 @120s vs 4.1641 (stopped) | LOSE — nothing to regularize when undertrained; wd just slows learning; wd=0 optimal |
+| b_beta299 | AdamW β₂ 0.95→0.99 | 4.4687 @60s vs 4.4429 (stopped) | LOSE — slower 2nd-moment adaptation hurts short run; β₂=0.95 optimal |
 | b_bs64 | w640, batch 128→64 | 4.0919@180s vs 4.0391 (stopped) | LOSE — batch saturated; 64 adds gradient noise, no benefit |
 | b_mlp3x | w640, MLP ratio 4×→3× | 3.8080 (134ms/step) | LOSE (Δ+0.010) — lost MLP capacity not recovered by extra steps; 4× is right |
 | b_hd64 | w640, head_dim 128→64 (n_head 5→10) | 4.5517 @60s vs 4.4383 (stopped) | LOSE badly — head_dim 128 is optimal |
