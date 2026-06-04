@@ -9,7 +9,8 @@ Sorted best-first:
 
 | name | key changes vs baseline | final val_loss | steps | step_avg | notes |
 |------|------------------------|---------------:|------:|---------:|-------|
-| **best.py (= arch_l6, verified)** | **n_layer=6, batch=64** | **3.8125** | 3241 | 93ms | **BEST — clean verification re-run; `logs/best_verify.out`** |
+| **best.py (= l6_bs128)** | **n_layer=6, batch=128, dbs=128** | **3.8041** | **1753** | **172ms** | **BEST — larger device batch, +13% tok/s via MFU, still above update-saturation; `logs/l6_bs128.out`** |
+| arch_l6 (verified) | n_layer=6, batch=64 | 3.8125 | 3241 | 93ms | prior best; bs64 |
 | arch_l6 | n_layer=6, batch=64 | 3.8158 | 3145 | 96ms | original best run; `logs/arch_l6.out` |
 | l6_wd45 | 6L, warmdown_frac=0.45 | 3.8192 | 3099 | 97ms | ~tie; default warmdown already near-optimal |
 | arch_l5 | n_layer=5, batch=64 | 3.8242 | 3485 | 86ms | confirms U-shaped depth curve |

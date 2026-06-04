@@ -2,11 +2,18 @@
 
 ## Result
 
-**Best val_loss = `3.8125`** (config `exp/best.py`, a **6-layer** model), vs the unmodified
-baseline `4.1955`. → **−0.383** (a large improvement for this budget). The 6-layer config was
-re-verified with a fresh clean single-GPU run: `3.8158` (original, `logs/arch_l6.out`) →
-`3.8125` (verification, `logs/best_verify.out`); the ~0.003 gap is init-seed run-to-run noise, so
-the result is robust.
+**Best val_loss = `3.8041`** (config `exp/best.py` = `exp/l6_bs128.py`: **6 layers, batch=128**),
+vs the unmodified baseline `4.1955`. → **−0.391**. Proof: `logs/l6_bs128.out`.
+(The earlier 6-layer/batch-64 config gave `3.8125`–`3.8158` across two clean runs — robust — and is
+retained as a checkpoint in the table.)
+
+### 5. Throughput at fixed depth — the third win
+Once depth is fixed at 6, the model is *so* far above the update-saturation point (~3145 steps vs
+the ~1098 where 512→128 stopped helping) that we can trade some of that surplus update-frequency
+for **more tokens**. Raising `device_batch_size` 64 → 128 improves GPU utilisation (MFU): throughput
+rose ~13% (**~683k → ~771k tok/s**). With ~1753 steps the run is still comfortably above saturation,
+so the extra tokens convert directly into lower loss: **3.8125 → 3.8041**. This is the same
+"maximize useful tokens" principle as levers 1 and 3, applied to hardware utilisation.
 
 Reproduce:
 ```bash
