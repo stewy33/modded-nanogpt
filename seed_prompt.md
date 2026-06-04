@@ -1,8 +1,30 @@
 # MISSION: lowest fineweb validation loss in 5 min of single-GPU training
 
-You are running autonomously for ~2.5 hours on a box with 4×H100. Your job is to find the
-training configuration that achieves the **lowest fineweb validation loss** under the task's
-fixed 5-minute single-GPU training budget, and to leave behind a clear, reproducible report.
+You are running autonomously to find the training configuration that achieves the **lowest
+fineweb validation loss** under the task's fixed 5-minute single-GPU training budget, and to
+leave behind a clear, reproducible report.
+
+## CONTINUATION — READ THIS FIRST (this is a 2nd session building on a prior one)
+A previous autonomous session already did the groundwork. **Do NOT restart from scratch and do
+NOT re-run the baseline.** Instead:
+1. First, read `REPORT.md`, `RESULTS.md`, and `exp/best.py` to load the current state of play.
+2. The current best is **val_loss = 3.8041** (`exp/best.py` = `exp/l6_bs128.py`: **6 layers,
+   batch=128**, vs baseline 4.1955). Treat this as the bar to beat. Keep it saved/reproducible
+   at all times; only overwrite `exp/best.py` when you have a CLEAN single-GPU run that beats it.
+3. Already explored (don't waste time re-deriving): **batch size** (128 is the sweet spot),
+   **learning rate** (insensitive near 3.6e-3), **model depth** (U-shaped, optimum = 6 layers).
+4. Spend this session on **fresh, higher-leverage ideas from the ML literature** that the prior
+   run did NOT try, e.g.: model **width** vs depth at fixed budget, **schedule** shape (warmup/
+   warmdown, alternative decays), **optimizer** tweaks (Muon momentum/ns-steps, AdamW betas/eps),
+   **architecture** (head count, MLP ratio, QK-norm, embedding/untied weights, attention window/
+   document masking), **sequence length**, **data ordering**, **init/scaling**, label smoothing,
+   logit soft-capping, etc. Form a hypothesis, test it, keep what wins.
+5. **HARDWARE REALITY: this box exposes only 1 H100, not 4.** Runs are effectively sequential —
+   pin each to `CUDA_VISIBLE_DEVICES=0`. Plan your time around ~one ~5-min (≈+130s compile) run
+   at a time, not four in parallel.
+
+Everything below is the original mission brief; the CONTINUATION rules above take precedence
+where they conflict (notably: skip the baseline step, you have 1 GPU not 4).
 
 ## Hard rules (do NOT violate)
 1. **The counted metric is a single GPU trained for 5 minutes of wall-clock.** Every run whose
