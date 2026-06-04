@@ -58,6 +58,7 @@ Once at 6L / 640 / bs128, every other lever we tried failed to beat it (all clea
 | Muon momentum 0.95→0.98 | 4.67 @60s (lost) | high momentum overshoots; 0.95 optimal |
 | weight_decay 0→0.1 | 4.18 @120s (lost) | nothing to regularize when undertrained; wd=0 optimal |
 | AdamW β₂ 0.95→0.99 | 4.47 @60s (lost) | slower 2nd-moment adaptation hurts short run; β₂=0.95 optimal |
+| Muon NS steps 5→6 | 4.45 @60s (~tie, slower) | 5 NS iterations already suffice |
 | logit soft-cap (tanh@15) | 4.56 @60s (lost) | slower + no quality gain in this regime |
 | untie wte/lm_head | 4.71 @60s (lost hard) | tied embeddings benefit from shared gradients when undertrained |
 | MLP ratio 4×→3× | 3.8080 (lost) | 4× expansion is right; 3× loses capacity faster than it gains steps |
