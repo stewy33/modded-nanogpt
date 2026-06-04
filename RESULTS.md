@@ -10,6 +10,7 @@ Sorted best-first:
 | name | key changes vs baseline | final val_loss | steps | step_avg | notes |
 |------|------------------------|---------------:|------:|---------:|-------|
 | **best.py (= narrow640)** | **6L, n_embd=640 (n_head=5), bs128** | **3.7975** | **2143** | **141ms** | **NEW BEST — width sweet spot: more steps than 768 + enough capacity for warmdown; `logs/narrow640.out`** |
+| l7_w640 | **n_layer=7**, n_embd=640, bs128 | 3.7983 | 1939 | 156ms | **ties best** (Δ0.0008, noise); depth flat at 6–7 for w640; `logs/l7_w640.out` |
 | l6_bs128 (prev best) | n_layer=6, batch=128, n_embd=768 | 3.8041 | 1753 | 172ms | prior best; larger device batch; `logs/l6_bs128.out` |
 | narrow512 | 6L, **n_embd=512** (n_head=4), bs128 | 3.8108 | 2686 | 112ms | near-tie; narrower=much faster (+53% steps), capacity binds in warmdown; `logs/narrow512.out` |
 | arch_l6 (verified) | n_layer=6, batch=64 | 3.8125 | 3241 | 93ms | prior best; bs64 |
