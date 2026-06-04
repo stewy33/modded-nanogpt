@@ -252,7 +252,7 @@ FINAL_RUNS = {
 }
 
 # these full-length runs converge well below the 75s runs, so use a tighter window
-_, final_axes = plt.subplots(4, 1, figsize=(8, 20))
+_, final_axes = plt.subplots(4, 1, figsize=(0.5 * len(FINAL_RUNS), 30))
 draw(FINAL_RUNS, final_axes, ylim=(3.7, 6.0))
 plt.show()
 

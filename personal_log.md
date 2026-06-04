@@ -78,7 +78,7 @@ Finally, I'm taking 5 minutes with the /teach skill to try to understand the cod
 Things I would do if I had more time
 - Understand the code better
 - See if there are any no-brainer kernel improvements or data loading improvements that don't change the logic of the code, just make it faster. In particular, we're in a weird regime where we have lots of free memory and just want to avoid any extra computations that we could, so maybe there are special kernels for this?
-- Get fp8 working properly (I suspect there might be instability if I just do it straight on the llm head). I would also want to do fp8 training to the mlps or the entire network. If it was unstable I suspect I'd need to 1) keep activations and certain weights in bf16 and keep only some in fp8, but I don't know the convention here 2) consuider using softcap or something similar to prevent magnitudes from growing too large, especially in the LM head
+- Get fp8 working properly (I suspect there might be instability if I just do it straight on the llm head). I would also want to do fp8 training to the mlps or the entire network. If it was unstable I suspect I'd need to 1) keep activations and certain weights in bf16 and keep only some in fp8, but I don't know the convention here 2) consuider using softcap or something similar to prevent magnitudes from growing too large, especially in the LM head. Or, perhaps fp8 is not even worse at learning but is just slower? That could be possible on h100s.
 
 Takeaways to understand better in the future
 - How pytorch DDP works and alternatives, i.e. does every process run the exact same python code just with a different environment variable? How does `synchronize` work and are there other primitives I should know about?
