@@ -1,70 +1,81 @@
 # Lowest fineweb val_loss in 5 min of single-GPU training — Report
 
-**Best val_loss so far: `3.8158`** (config `exp/arch_l6.py`, a 6-layer model).
-Baseline (unmodified) was `4.1955`. → **−0.380 improvement.**
+## Result
 
-Reproduce the best:
+**Best val_loss = `3.8158`** (config `exp/best.py`, a **6-layer** model), vs the unmodified
+baseline `4.1955`. → **−0.380** (a large improvement for this budget).
+
+Reproduce:
 ```bash
 CUDA_VISIBLE_DEVICES=0 torchrun --standalone --nproc_per_node=1 exp/best.py > logs/best.out 2>&1
-# best.py == arch_l6.py
+# best.py is identical to exp/arch_l6.py
+# proof of original result: logs/arch_l6.out ; verification re-run: logs/best_verify.out
 ```
 
-## Environment note
-The box exposed **only 1 H100** (not 4), so all experiments were run **sequentially**, one
-single-GPU run at a time. Every reported number uses `--nproc_per_node=1`, `total_train_minutes=5.0`.
-A persistent issue: `torch.compile` adds ~130s startup and occasionally a mid-run recompile;
-these only cost wall-clock, **not** the 5-minute training budget (the timer is paused during
-validation, where the recompiles occurred), so the metrics are clean.
+The two changes from baseline that matter:
+1. **Global batch 512 → 64** (no gradient accumulation): ~4–8× more optimizer steps over the
+   same tokens. (−0.33)
+2. **Depth 12 → 6 layers**: a smaller/faster model trains on more tokens and reaches lower loss
+   in this compute-limited regime. (−0.046)
+
+## Environment note (important)
+The machine exposed **only 1 H100**, not 4 — so all runs were **sequential**, one single-GPU run
+at a time. Every reported number uses `--nproc_per_node=1`, `total_train_minutes=5.0`. `torch.compile`
+adds ~130 s of startup and sometimes a mid-run recompile; these cost wall-clock only, **not** the
+5-minute training budget — the budget timer is paused during validation, where the recompiles
+happened — so all val_loss numbers are directly comparable.
 
 ## The story
 
-### 1. Batch size: the first big win
-The baseline uses `batch_size=512` with `device_batch_size=64` → **8 gradient-accumulation
-microbatches per optimizer step**, costing ~1081 ms/step and yielding only **288 optimizer steps**
-in 5 minutes. Throughput (~480k tok/s) is set by the hardware, so a smaller global batch buys
-**more optimizer steps over the same number of tokens**.
+### 1. Batch size — the first big win
+Baseline uses `batch_size=512`, `device_batch_size=64` → **8 grad-accumulation microbatches per
+optimizer step**, ~1081 ms/step, only **288 steps** in 5 min. Throughput (~480k tok/s) is fixed by
+the hardware, so a smaller global batch buys **more optimizer steps over the same tokens**.
 
-| global batch | steps in 5 min | val_loss |
+| global batch | steps | val_loss |
 |---|---|---|
 | 512 (baseline) | 288 | 4.1955 |
-| 256 | — | (skipped) |
 | 128 | 1098 | 3.8619 |
 | 64  | 1956 | 3.8621 |
 
-Dropping 512→128 gave a **huge −0.33**. 128 vs 64 was a **tie** → the benefit of more frequent
-updates **saturates by batch≈128**; below that the token budget, not update count, is the limiter.
+512→128 gave **−0.33**. 128 vs 64 **tied** → the benefit of more frequent updates **saturates by
+batch ≈ 128**; below that, the token budget (not update count) is the limiter. We keep batch 64.
 
-### 2. Learning rate: insensitive
-Sweeping the (coupled AdamW+Muon) LR around the default `3.6e-3`:
-`5.0e-3 → 3.8694`, `3.6e-3 → 3.8621`, `2.4e-3 ≈ tie`. Essentially flat — Muon's orthogonalized
-update is fairly LR-robust. Not a productive lever here.
+### 2. Learning rate — insensitive
+Sweeping the coupled AdamW+Muon LR around the default `3.6e-3`: `5.0e-3 → 3.8694`,
+`3.6e-3 → 3.8621`, `2.4e-3 ≈ tie`. Essentially flat — Muon's orthogonalized update is LR-robust.
+Not a useful lever here; kept `3.6e-3`.
 
-### 3. Model size: the second win (the model is *undertrained*)
-In 5 min the 124M model sees ~145M tokens ≈ **1 token/parameter** — far below Chinchilla-optimal
-(~20). Loss is bottlenecked by **compute/undertraining, not capacity**. So a **smaller, faster
-model trains on more tokens and reaches lower loss**:
+### 3. Model depth — the second win (the model is *undertrained*)
+In 5 min the 124M model sees ~145M tokens ≈ **1 token/parameter**, far below Chinchilla-optimal
+(~20). Loss is bottlenecked by **compute, not capacity** → a smaller, faster model wins:
 
 | n_layer | ms/step | steps | val_loss |
 |---|---|---|---|
-| 12 (default) | 154 | 1956 | 3.8621 |
-| 10 | — | — | (pending/optional) |
-| 8 | 113 | 2670 | 3.8252 |
-| 6 | 96  | 3145 | **3.8158** |
-| 4 | 76  | 3962 | 3.8393 |
+| 12 | 154 | 1956 | 3.8621 |
+| 8  | 113 | 2670 | 3.8252 |
+| 6  | 96  | 3145 | **3.8158** |
+| 5  | 86  | 3485 | 3.8242 |
+| 4  | 76  | 3962 | 3.8393 |
 
-Depth is **U-shaped with the optimum at 6 layers**: `4 (3.8393) > 6 (3.8158) < 8 (3.8252) < 12
-(3.8621)`. At 4 layers the capacity floor is hit — even with ~4000 steps it loses to 6L. Notably
-the smaller models lead *early* (more steps) but capacity matters in the warmdown/late phase, which
-is why the ordering flips by 300s.
+Depth is **U-shaped with a clear minimum at 6 layers**. Smaller models lead *early* (more steps),
+but capacity matters in the warmdown/late phase — by 300 s the ordering settles with 6L on top, and
+4L hits a capacity floor (loses despite ~4000 steps). 6 layers is the sweet spot between
+"more steps" and "enough capacity".
 
-## 4. Schedule tuning
-Testing a longer warmdown (`warmdown_frac` 0.28 → 0.45) on the 6-layer winner.
+### 4. Schedule (warmdown) — already near-optimal
+`warmdown_frac` 0.28 → 0.45 on the 6-layer model gave `3.8192` ≈ tie with `3.8158`. The default
+trapezoidal schedule is already good; no gain.
 
-## Remaining
-- Schedule tuning result, then a clean final re-verification of the chosen best config.
+## Conclusion
+The winning recipe = baseline architecture/optimizer (Muon + AdamW, RoPE, QK-norm, ReLU² MLP) with
+**batch_size = device_batch_size = 64** and **n_layer = 6**. Final val_loss **3.8158**.
+The two effective levers both come from the same insight: in a fixed 5-minute, single-GPU,
+heavily-undertrained budget, **maximize useful gradient updates and tokens-per-second** (small batch,
+shallow model) up to the point where update-frequency saturates and capacity starts to bind.
 
 ## Plots
 ![trajectories](img/trajectories.png)
 ![final bar](img/final_bar.png)
 
-See `RESULTS.md` for the full per-experiment table.
+Full per-experiment table: `RESULTS.md`.
