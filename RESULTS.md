@@ -37,6 +37,7 @@ before we discovered only 1 GPU exists; not re-run since 128/64 already characte
 | b_untie | untie wte/lm_head (both in AdamW) | 4.7098 (143ms/step) | LOSE badly — tied embeddings benefit from shared gradients in undertrained regime |
 | b_muonlr2x | Muon lr 0.1×→0.2× base | ~tie at 120s (stopped) | no gain — Muon LR already well-tuned |
 | b_bs64 | w640, batch 128→64 | 4.0919@180s vs 4.0391 (stopped) | LOSE — batch saturated; 64 adds gradient noise, no benefit |
+| b_mlp3x | w640, MLP ratio 4×→3× | 3.8080 (134ms/step) | LOSE (Δ+0.010) — lost MLP capacity not recovered by extra steps; 4× is right |
 
 **Width sweep (6L, bs128):** 512→3.8108, **640→3.7975 (BEST)**, 768→3.8041, 1024→lose.
 Width is U-shaped with optimum at **n_embd=640** — the same "maximize useful tokens up to where capacity
