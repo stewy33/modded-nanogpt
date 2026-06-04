@@ -2,10 +2,11 @@
 
 ## Result
 
-**Best val_loss = `3.7975`** (config `exp/best.py` = `exp/narrow640.py`: **6 layers, n_embd=640
-(n_head=5), batch=128**), vs the unmodified baseline `4.1955` → **−0.398**.
-Proof: `logs/narrow640.out`. Verified reproducible on a clean re-run: **3.8014**
-(`logs/best_verify2.out`); run-to-run noise ≈ 0.004, so the config sits robustly at ~3.797–3.801,
+**Best val_loss = `3.7967`** (config `exp/best.py` = `exp/narrow640.py`: **6 layers, n_embd=640
+(n_head=5), batch=128**), vs the unmodified baseline `4.1955` → **−0.399**.
+Proof: `logs/best.out`. Robustly reproducible — **three independent clean runs gave
+{3.7967, 3.7975, 3.8014}, mean 3.7985** (`logs/best.out`, `logs/narrow640.out`,
+`logs/best_verify2.out`); run-to-run noise ≈ 0.002–0.004, so the config sits robustly at ~3.797–3.801,
 below the prior session's best of 3.8041.
 
 Reproduce:
@@ -55,7 +56,9 @@ Once at 6L / 640 / bs128, every other lever we tried failed to beat it (all clea
 | Muon lr 0.1×→0.2× | ~tie @120s | Muon LR already well-tuned |
 | logit soft-cap (tanh@15) | 4.56 @60s (lost) | slower + no quality gain in this regime |
 | untie wte/lm_head | 4.71 @60s (lost hard) | tied embeddings benefit from shared gradients when undertrained |
-| MLP ratio 4×→3× | see RESULTS | (final exploration) |
+| MLP ratio 4×→3× | 3.8080 (lost) | 4× expansion is right; 3× loses capacity faster than it gains steps |
+| head_dim 128→64 (n_head 5→10) | 4.55 @60s (lost) | head_dim 128 is optimal |
+| width 768→1024 | 4.83 @60s (lost) | wider = −42% steps, fatal throughput loss |
 
 This is the signature of a well-optimized point: the two capacity↔throughput axes (width=640,
 depth=6) are balanced, batch is saturated, and the schedule/optimizer are already tuned. The

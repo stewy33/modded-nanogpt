@@ -14,7 +14,7 @@ runs = {
     'baseline bs512/12L (4.1955)': ([300],[4.1955]),
     'l6_bs128 w768 (3.8041)':      ([60,120,180,240,300],[4.5019,4.1906,4.0635,3.9452,3.8041]),
     'narrow512 w512 (3.8108)':     ([60,120,180,240,300],[4.3738,4.1463,4.0380,3.9366,3.8108]),
-    'BEST narrow640 w640 (3.7975)':([60,120,180,240,300],[4.4383,4.1641,4.0391,3.9290,3.7975]),
+    'BEST narrow640 w640 (3.7967)':([60,120,180,240,300],[4.4429,4.1641,4.0399,3.9298,3.7967]),
     'l7_w640 (3.7983)':            ([60,120,180,240,300],[4.4600,4.1786,4.0508,3.9370,3.7983]),
 }
 
@@ -32,7 +32,7 @@ plt.tight_layout(); plt.savefig('img/trajectories.png', dpi=120); plt.close()
 
 # ---- Width sweep (the session-2 lever) ----
 widths = [512,640,768,1024]
-wloss  = [3.8108,3.7975,3.8041,None]  # 1024 did not finish (lost hard)
+wloss  = [3.8108,3.7967,3.8041,None]  # 1024 did not finish (lost hard)
 plt.figure(figsize=(6,4))
 xs=[w for w,l in zip(widths,wloss) if l]; ys=[l for l in wloss if l]
 plt.plot(xs,ys,'o-',color='C2')
@@ -54,7 +54,7 @@ configs = [
     ('narrow512\nw512',3.8108),
     ('l7_w640',3.7983),
     ('wd40\nw640',3.7971),
-    ('BEST\nnarrow640',3.7975),
+    ('BEST\nnarrow640',3.7967),
 ]
 configs.sort(key=lambda x:-x[1])
 names=[c[0] for c in configs]; vals=[c[1] for c in configs]
