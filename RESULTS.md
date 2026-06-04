@@ -9,8 +9,9 @@ Sorted best-first:
 
 | name | key changes vs baseline | final val_loss | steps | step_avg | notes |
 |------|------------------------|---------------:|------:|---------:|-------|
-| **best.py (= l6_bs128)** | **n_layer=6, batch=128, dbs=128** | **3.8041** | **1753** | **172ms** | **BEST — larger device batch, +13% tok/s via MFU, still above update-saturation; `logs/l6_bs128.out`** |
-| narrow512 | 6L, **n_embd=512** (n_head=4), bs128 | 3.8108 | 2686 | 112ms | **near-tie** w/ best; narrower=much faster (+53% steps), capacity binds only in warmdown; `logs/narrow512.out` |
+| **best.py (= narrow640)** | **6L, n_embd=640 (n_head=5), bs128** | **3.7975** | **2143** | **141ms** | **NEW BEST — width sweet spot: more steps than 768 + enough capacity for warmdown; `logs/narrow640.out`** |
+| l6_bs128 (prev best) | n_layer=6, batch=128, n_embd=768 | 3.8041 | 1753 | 172ms | prior best; larger device batch; `logs/l6_bs128.out` |
+| narrow512 | 6L, **n_embd=512** (n_head=4), bs128 | 3.8108 | 2686 | 112ms | near-tie; narrower=much faster (+53% steps), capacity binds in warmdown; `logs/narrow512.out` |
 | arch_l6 (verified) | n_layer=6, batch=64 | 3.8125 | 3241 | 93ms | prior best; bs64 |
 | arch_l6 | n_layer=6, batch=64 | 3.8158 | 3145 | 96ms | original best run; `logs/arch_l6.out` |
 | l6_wd45 | 6L, warmdown_frac=0.45 | 3.8192 | 3099 | 97ms | ~tie; default warmdown already near-optimal |
@@ -32,8 +33,10 @@ before we discovered only 1 GPU exists; not re-run since 128/64 already characte
 | width1024 | n_embd=1024, n_head=8 | 4.8342 (245ms/step, −42% steps) | LOSE — wider=slower, throughput dominates undertrained regime |
 | softcap | tanh logit soft-cap @15 | 4.5596 (177ms/step) | LOSE — slower + behind; no quality gain here |
 
-**Width sweep (6L, bs128):** 512→**3.8108**, 768→**3.8041** (best), 1024→lose. Width optimum is at/near 768;
-512 nearly ties despite 53% more steps. Testing 640 to see if the in-between point edges out 768.
+**Width sweep (6L, bs128):** 512→3.8108, **640→3.7975 (BEST)**, 768→3.8041, 1024→lose.
+Width is U-shaped with optimum at **n_embd=640** — the same "maximize useful tokens up to where capacity
+binds" tradeoff as depth, now on the width axis. 640 gets 2143 steps (vs 768's 1753) yet keeps enough
+capacity that its warmdown (−0.131) matches the wider model's.
 
 ## Two effective levers
 1. **Smaller global batch** (512→64): more optimizer steps per token. Saturates by batch≈128.
