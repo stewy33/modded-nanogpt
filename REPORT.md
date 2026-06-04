@@ -56,6 +56,7 @@ Once at 6L / 640 / bs128, every other lever we tried failed to beat it (all clea
 | Muon lr 0.1×→0.2× | ~tie @120s | Muon LR already well-tuned |
 | LR 3.6e-3→4.7e-3 | 3.7996 (~tie) | LR insensitive at w640 too |
 | Muon momentum 0.95→0.98 | 4.67 @60s (lost) | high momentum overshoots; 0.95 optimal |
+| weight_decay 0→0.1 | 4.18 @120s (lost) | nothing to regularize when undertrained; wd=0 optimal |
 | logit soft-cap (tanh@15) | 4.56 @60s (lost) | slower + no quality gain in this regime |
 | untie wte/lm_head | 4.71 @60s (lost hard) | tied embeddings benefit from shared gradients when undertrained |
 | MLP ratio 4×→3× | 3.8080 (lost) | 4× expansion is right; 3× loses capacity faster than it gains steps |
