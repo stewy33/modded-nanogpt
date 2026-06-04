@@ -1,0 +1,6 @@
+/workspace/modded-nanogpt/exp/b_mlp3x.py:27: SyntaxWarning: invalid escape sequence '\s'
+  """
+using device: cuda:0
+Training DataLoader: total number of tokens: 2600000000 across 26 files
+Validation DataLoader: total number of tokens: 100000000 across 1 files
+training time budget: 300.0s (5.0 single-GPU min / 1 GPUs)

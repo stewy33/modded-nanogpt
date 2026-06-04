@@ -9,7 +9,8 @@ Sorted best-first:
 
 | name | key changes vs baseline | final val_loss | steps | step_avg | notes |
 |------|------------------------|---------------:|------:|---------:|-------|
-| **best.py (= narrow640)** | **6L, n_embd=640 (n_head=5), bs128** | **3.7975** | **2143** | **141ms** | **NEW BEST — width sweet spot: more steps than 768 + enough capacity for warmdown; `logs/narrow640.out`** |
+| **best.py (= narrow640)** | **6L, n_embd=640 (n_head=5), bs128** | **3.7975** | **2143** | **141ms** | **NEW BEST — width sweet spot; verified 3.8014 on a clean re-run (`logs/best_verify2.out`), run-noise ≈0.004; `logs/narrow640.out`** |
+| b_wd40 | w640 6L, **warmdown_frac=0.40** | 3.7971 | 2112 | 143ms | ties best (Δ0.0004); warmdown 0.28–0.40 flat; `logs/b_wd40.out` |
 | l7_w640 | **n_layer=7**, n_embd=640, bs128 | 3.7983 | 1939 | 156ms | **ties best** (Δ0.0008, noise); depth flat at 6–7 for w640; `logs/l7_w640.out` |
 | l6_bs128 (prev best) | n_layer=6, batch=128, n_embd=768 | 3.8041 | 1753 | 172ms | prior best; larger device batch; `logs/l6_bs128.out` |
 | narrow512 | 6L, **n_embd=512** (n_head=4), bs128 | 3.8108 | 2686 | 112ms | near-tie; narrower=much faster (+53% steps), capacity binds in warmdown; `logs/narrow512.out` |
@@ -33,6 +34,9 @@ before we discovered only 1 GPU exists; not re-run since 128/64 already characte
 |------|--------|------------------------:|---------|
 | width1024 | n_embd=1024, n_head=8 | 4.8342 (245ms/step, −42% steps) | LOSE — wider=slower, throughput dominates undertrained regime |
 | softcap | tanh logit soft-cap @15 | 4.5596 (177ms/step) | LOSE — slower + behind; no quality gain here |
+| b_untie | untie wte/lm_head (both in AdamW) | 4.7098 (143ms/step) | LOSE badly — tied embeddings benefit from shared gradients in undertrained regime |
+| b_muonlr2x | Muon lr 0.1×→0.2× base | ~tie at 120s (stopped) | no gain — Muon LR already well-tuned |
+| b_bs64 | w640, batch 128→64 | 4.0919@180s vs 4.0391 (stopped) | LOSE — batch saturated; 64 adds gradient noise, no benefit |
 
 **Width sweep (6L, bs128):** 512→3.8108, **640→3.7975 (BEST)**, 768→3.8041, 1024→lose.
 Width is U-shaped with optimum at **n_embd=640** — the same "maximize useful tokens up to where capacity

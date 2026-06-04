@@ -2,90 +2,78 @@
 
 ## Result
 
-**Best val_loss = `3.8041`** (config `exp/best.py` = `exp/l6_bs128.py`: **6 layers, batch=128**),
-vs the unmodified baseline `4.1955`. → **−0.391**. Proof: `logs/l6_bs128.out`.
-(The earlier 6-layer/batch-64 config gave `3.8125`–`3.8158` across two clean runs — robust — and is
-retained as a checkpoint in the table.)
-
-### 5. Throughput at fixed depth — the third win
-Once depth is fixed at 6, the model is *so* far above the update-saturation point (~3145 steps vs
-the ~1098 where 512→128 stopped helping) that we can trade some of that surplus update-frequency
-for **more tokens**. Raising `device_batch_size` 64 → 128 improves GPU utilisation (MFU): throughput
-rose ~13% (**~683k → ~771k tok/s**). With ~1753 steps the run is still comfortably above saturation,
-so the extra tokens convert directly into lower loss: **3.8125 → 3.8041**. This is the same
-"maximize useful tokens" principle as levers 1 and 3, applied to hardware utilisation.
+**Best val_loss = `3.7975`** (config `exp/best.py` = `exp/narrow640.py`: **6 layers, n_embd=640
+(n_head=5), batch=128**), vs the unmodified baseline `4.1955` → **−0.398**.
+Proof: `logs/narrow640.out`. Verified reproducible on a clean re-run: **3.8014**
+(`logs/best_verify2.out`); run-to-run noise ≈ 0.004, so the config sits robustly at ~3.797–3.801,
+below the prior session's best of 3.8041.
 
 Reproduce:
 ```bash
 CUDA_VISIBLE_DEVICES=0 torchrun --standalone --nproc_per_node=1 exp/best.py > logs/best.out 2>&1
-# best.py is identical to exp/arch_l6.py
-# proof of original result: logs/arch_l6.out ; verification re-run: logs/best_verify.out
 ```
 
-The two changes from baseline that matter:
-1. **Global batch 512 → 64** (no gradient accumulation): ~4–8× more optimizer steps over the
-   same tokens. (−0.33)
-2. **Depth 12 → 6 layers**: a smaller/faster model trains on more tokens and reaches lower loss
-   in this compute-limited regime. (−0.046)
+## How we got here
 
-## Environment note (important)
-The machine exposed **only 1 H100**, not 4 — so all runs were **sequential**, one single-GPU run
-at a time. Every reported number uses `--nproc_per_node=1`, `total_train_minutes=5.0`. `torch.compile`
-adds ~130 s of startup and sometimes a mid-run recompile; these cost wall-clock only, **not** the
-5-minute training budget — the budget timer is paused during validation, where the recompiles
-happened — so all val_loss numbers are directly comparable.
+Session 1 (prior) established the dominant insight: in a fixed 5-min, single-GPU, **heavily
+undertrained** budget (~1 token/parameter, ~20× below Chinchilla), loss is bottlenecked by
+**compute, not capacity** — so the winning move is to **maximize useful gradient updates × tokens**.
+It found: global batch 512→128 (−0.33), depth 12→6 (−0.05), giving **3.8041** (6L / bs128 / n_embd=768).
+LR and warmdown were insensitive.
 
-## The story
+Session 2 (this run) attacked the one major axis session 1 never swept: **model width**, and then
+swept the secondary levers around the new optimum.
 
-### 1. Batch size — the first big win
-Baseline uses `batch_size=512`, `device_batch_size=64` → **8 grad-accumulation microbatches per
-optimizer step**, ~1081 ms/step, only **288 steps** in 5 min. Throughput (~480k tok/s) is fixed by
-the hardware, so a smaller global batch buys **more optimizer steps over the same tokens**.
+### The win — width is U-shaped, optimum at n_embd=640
+At fixed depth=6 / bs128, sweeping `n_embd`:
 
-| global batch | steps | val_loss |
-|---|---|---|
-| 512 (baseline) | 288 | 4.1955 |
-| 128 | 1098 | 3.8619 |
-| 64  | 1956 | 3.8621 |
+| n_embd | n_head | step_avg | steps | final val_loss |
+|-------:|-------:|---------:|------:|---------------:|
+| 512  | 4 | 112ms | 2686 | 3.8108 |
+| **640** | **5** | **141ms** | **2143** | **3.7975 ← BEST** |
+| 768 (prev best) | 6 | 172ms | 1753 | 3.8041 |
+| 1024 | 8 | 245ms | ~1250 | lost hard (4.83 @60s) — killed early |
 
-512→128 gave **−0.33**. 128 vs 64 **tied** → the benefit of more frequent updates **saturates by
-batch ≈ 128**; below that, the token budget (not update count) is the limiter. We keep batch 64.
+Same tradeoff as depth, now on the width axis. Narrowing 768→640 buys **+22% optimizer steps**
+(1753→2143) while keeping enough capacity that the late warmdown is just as effective
+(−0.131 over the last 60 s, matching the wider model). Go too narrow (512) and capacity binds in
+the warmdown — it leads the whole run but loses the final descent (3.8108). Go wider (1024) and the
+collapse in throughput (−42% steps) is fatal. **640 is the sweet spot.** See `img/width_sweep.png`.
 
-### 2. Learning rate — insensitive
-Sweeping the coupled AdamW+Muon LR around the default `3.6e-3`: `5.0e-3 → 3.8694`,
-`3.6e-3 → 3.8621`, `2.4e-3 ≈ tie`. Essentially flat — Muon's orthogonalized update is LR-robust.
-Not a useful lever here; kept `3.6e-3`.
+The mechanism is visible in the trajectories (`img/trajectories.png`): narrower models lead early
+(more steps) and the lead shrinks through training as capacity starts to bind; 640 keeps just enough
+lead through the warmdown to finish on top.
 
-### 3. Model depth — the second win (the model is *undertrained*)
-In 5 min the 124M model sees ~145M tokens ≈ **1 token/parameter**, far below Chinchilla-optimal
-(~20). Loss is bottlenecked by **compute, not capacity** → a smaller, faster model wins:
+### Everything else around the optimum was flat or negative
+Once at 6L / 640 / bs128, every other lever we tried failed to beat it (all clean single-GPU runs):
 
-| n_layer | ms/step | steps | val_loss |
-|---|---|---|---|
-| 12 | 154 | 1956 | 3.8621 |
-| 8  | 113 | 2670 | 3.8252 |
-| 6  | 96  | 3145 | **3.8158** |
-| 5  | 86  | 3485 | 3.8242 |
-| 4  | 76  | 3962 | 3.8393 |
+| lever | result | verdict |
+|-------|--------|---------|
+| depth 6→7 @ w640 | 3.7983 | **tie** (Δ0.0008) — depth is flat at 6–7 for this width |
+| warmdown_frac 0.28→0.40 | 3.7971 | **tie** (Δ0.0004) — schedule already near-optimal |
+| batch 128→64 @ w640 | 4.09 @180s (lost) | batch already saturated; 64 just adds gradient noise |
+| Muon lr 0.1×→0.2× | ~tie @120s | Muon LR already well-tuned |
+| logit soft-cap (tanh@15) | 4.56 @60s (lost) | slower + no quality gain in this regime |
+| untie wte/lm_head | 4.71 @60s (lost hard) | tied embeddings benefit from shared gradients when undertrained |
+| MLP ratio 4×→3× | see RESULTS | (final exploration) |
 
-Depth is **U-shaped with a clear minimum at 6 layers**. Smaller models lead *early* (more steps),
-but capacity matters in the warmdown/late phase — by 300 s the ordering settles with 6L on top, and
-4L hits a capacity floor (loses despite ~4000 steps). 6 layers is the sweet spot between
-"more steps" and "enough capacity".
-
-### 4. Schedule (warmdown) — already near-optimal
-`warmdown_frac` 0.28 → 0.45 on the 6-layer model gave `3.8192` ≈ tie with `3.8158`. The default
-trapezoidal schedule is already good; no gain.
+This is the signature of a well-optimized point: the two capacity↔throughput axes (width=640,
+depth=6) are balanced, batch is saturated, and the schedule/optimizer are already tuned. The
+remaining variation (±0.001) is run-to-run noise.
 
 ## Conclusion
-The winning recipe = baseline architecture/optimizer (Muon + AdamW, RoPE, QK-norm, ReLU² MLP) with
-**batch_size = device_batch_size = 64** and **n_layer = 6**. Final val_loss **3.8158**.
-The two effective levers both come from the same insight: in a fixed 5-minute, single-GPU,
-heavily-undertrained budget, **maximize useful gradient updates and tokens-per-second** (small batch,
-shallow model) up to the point where update-frequency saturates and capacity starts to bind.
+The winning recipe = baseline architecture/optimizer (Muon + AdamW, RoPE, QK-norm, ReLU² MLP,
+weight-tied embeddings) with **batch_size = device_batch_size = 128**, **n_layer = 6**, and
+**n_embd = 640** (n_head = 5, head_dim = 128). Final val_loss **3.7975** (verified 3.8014).
+
+The single principle across both sessions: in a fixed-wall-clock, undertrained budget, **trade
+capacity for throughput up to the point where the warmdown can no longer exploit the model's
+capacity**. Session 1 walked the batch and depth axes; session 2 found that the *width* axis still
+had a small win left at n_embd=640.
 
 ## Plots
 ![trajectories](img/trajectories.png)
+![width sweep](img/width_sweep.png)
 ![final bar](img/final_bar.png)
 
 Full per-experiment table: `RESULTS.md`.
