@@ -2,8 +2,11 @@
 
 ## Result
 
-**Best val_loss = `3.8158`** (config `exp/best.py`, a **6-layer** model), vs the unmodified
-baseline `4.1955`. → **−0.380** (a large improvement for this budget).
+**Best val_loss = `3.8125`** (config `exp/best.py`, a **6-layer** model), vs the unmodified
+baseline `4.1955`. → **−0.383** (a large improvement for this budget). The 6-layer config was
+re-verified with a fresh clean single-GPU run: `3.8158` (original, `logs/arch_l6.out`) →
+`3.8125` (verification, `logs/best_verify.out`); the ~0.003 gap is init-seed run-to-run noise, so
+the result is robust.
 
 Reproduce:
 ```bash
